@@ -127,3 +127,13 @@ Modré tlačítko:
   - Fungovat ale bude
   - Proces posléze není příliš složitý
 
+#### Tailwind - jednoduchý příklad
+
+```html
+<div class=" bg-green-500 text-red-400 w-max rounded-xl p-3 my-4">
+```
+
+![](media/tailwind_sample.png)
+
+## Domácí úloha
+
