@@ -137,3 +137,23 @@ Modré tlačítko:
 
 ## Domácí úloha
 
+- Vytvořte seznam vybavení, tak aby fungoval přibližně takto: 
+
+![](media/cv_du.gif)
+
+- Seznam vybavení je `List` (nebo pole) typu `VybaveniModel`. Tuto třídu musíte nejdřív přidat do projektu.
+- Třída `VybaveniModel` má tyto vlastnosti (odpovídají sloupečkům v tabulce):
+  - Name (string)
+  - BoughtDate (DateTime)
+  - LastRevisionDate (DateTime)
+  - NeedsRevision (bool) - vlastnost bez settru. True v případě, že poslední revize je starší než 2 měsíce.
+    - Odpovídající sloupec má červené podbarvení pokud je revize třeba.
+- V posledním sloupci jsou tlačítka:
+  - Smazat: Smaže prvek ze seznamu
+  - Provést revizi: nastaví datum poslední revize na dnešek
+- Součástí úlohy je i vytvořit generátor dat. Není to nic složitého. Pro náhodná jména můžete použít:
+
+```csharp
+    public static string RandomString(int length,Random rnd)=>
+        new (Enumerable.Range(0, length).Select(_ => (char)rnd.Next('a', 'z')).ToArray());
+```
