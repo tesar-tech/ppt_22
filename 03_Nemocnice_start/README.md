@@ -146,7 +146,7 @@ Modré tlačítko:
   - Name (string)
   - BoughtDate (DateTime)
   - LastRevisionDate (DateTime)
-  - NeedsRevision (bool) - vlastnost bez settru. True v případě, že poslední revize je starší než 2 měsíce.
+  - NeedsRevision (bool) - vlastnost bez settru. True v případě, že poslední revize je starší než 2 roky.
     - Odpovídající sloupec má červené podbarvení pokud je revize třeba.
 - V posledním sloupci jsou tlačítka:
   - Smazat: Smaže prvek ze seznamu
