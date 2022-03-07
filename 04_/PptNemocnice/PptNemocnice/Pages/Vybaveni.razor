@@ -1,0 +1,36 @@
+﻿@page "/vybaveni"
+@page "/co"
+
+<table class="w-full">
+
+    <thead class="border-b-2 border-slate-500">
+        <tr>
+            <th>Název</th>
+            <th>Datum nákupu</th>
+            <th>Datum poslední revize</th>
+            <th>Potřebuje revizi?</th>
+        </tr>
+    </thead>
+
+@foreach (var item in seznamVybaveni)
+{
+    <tr class="@(item.NeedsRevision?"bg-red-300":"")">
+    <td>@item.Name </td>
+    <td>@item.BoughtDateTime.ToString("yyyy-MM-dd") </td>
+    <td>@item.LastRevision.ToString("yyyy-MM-dd") </td>
+    <td>@(item.NeedsRevision?"Ano":"Ne") </td>
+
+     <td class="flex gap-1" >
+         <button @onclick="() => seznamVybaveni.Remove(item)" class="bg-red-400 rounded-sm text-sm px-2 py-1">Smazat</button>
+         <button @onclick="() => item.LastRevision = DateTime.Now" class="bg-blue-400 rounded-sm text-sm px-2 py-1">Provést revizi</button>
+     </td>
+     </tr>
+}
+
+   
+</table>
+@code{
+    List<VybaveniModel> seznamVybaveni = VybaveniModel.GetTestList();
+
+
+}
