@@ -113,15 +113,23 @@ jobs:
   - Vytvořte v modelu vlastnost `IsInEditMode`
   - Po kliknutí na tlačítko se změní na true.
 - V případě, že je záznam v edit módu, tak se místo výpisu textů (a datumů) zobrazí textová pole.
-
-```razor
- <td><input type="date" @bind-value=item.BoughtDateTime/> </td>
-```
-
-- Tímto značně naroste velikost kódu. I proto je vhodné si kód celého záznamu odložit do komponenty (viz níže).
 - Ve finále vznikne něco takového:
 
 ![](media/edit_komponenta.gif)
+
+- Nyní je řádek ve stavu, kdy se po kliknutí na tlačítko změní vlastnost `IsInEditMode`. (ale nic se s tím neděje)
+- Vytvořte editační vzhled v závislosti na `IsInEditMode` vlastnosti: `@if(!item.IsInEditMode)`
+- Využijte `<input type="text" @bind-value=@item.Name/>`
+  - `@bind-value` je dvoustranný (Two-way) binding, což zajistí propsání textu z textového pole do proměnné `item.Name`.
+    - Jednostranným bindingem `Vale=item.Name` by se docílilo pouze vypsáním "staré" hodnoty `item.Name` do textového pole.
+- Podobně vytvořte pole pro editaci datumů. UI pro editaci data (kalendář) je v závislosti na implementaci každého prohlížeče jiný. 
+- `NeedsRevision` se přímo upravovat nedá, je dopočítán z datumů. 
+- Odstraňte tlačítko pro smazání a revizi. Editovací tlačítko nahraďte textem "Ok".
+- Poznámka: Kdybychom chtěli implementovat tlačítko "Zrušit změny" museli bychom si původní stav nejprve uložit (což budeme dodělávat posléze)
+
+![](media/edit_komponenta.gif)
+
+- Tímto značně naroste velikost kódu. I proto je vhodné si kód celého záznamu odložit do komponenty:
 
 ## Tvorba komponent
 
@@ -211,20 +219,6 @@ A jeho použití:
 ```razor
 <VybaveniRow Item=item DeleteItemCallback="() => seznamVybaveni.Remove(item)" />
 ```
-
-## Editace záznamu
-
-- Nyní je řádek ve stavu, kdy se po kliknutí na tlačítko změní vlastnost `IsInEditMode`. (ale nic se s tím neděje)
-- Vytvořte editační vzhled v závislosti na `IsInEditMode` vlastnosti: `@if(!Item.IsInEditMode)`
-- Využijte `<input type="text" @bind-value=@Item.Name/>`
-  - `@bind-value` je dvoustranný (Two-way) binding, což zajistí propsání textu z textového pole do proměnné `Item.Name`.
-    - Jednostranným bindingem `Vale=Item.Name` by se docílilo pouze vypsáním "staré" hodnoty `Item.Name` do textového pole.
-- Podobně vytvořte pole pro editaci datumů. UI pro editaci data (kalendář) je v závislosti na implementaci každého prohlížeče jiný. 
-- `NeedsRevision` se přímo upravovat nedá, je dopočítán z datumů. 
-- Odstraňte tlačítko pro smazání a revizi. Editovací tlačítko nahraďte textem "Ok".
-- Poznámka: Kdybychom chtěli implementovat tlačítko "Zrušit změny" museli bychom si původní stav nejprve uložit (což budeme dodělávat posléze)
-
-![](media/edit_komponenta.gif)
 
 ## Tailwind - defaultní styl tlačítka
 
