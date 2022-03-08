@@ -17,6 +17,7 @@ Co se bude dít s aplikací:
 - V repozitáři: Actions -> New workflow -> .NET (ale to je jedno, protože celý kód bude nahrazen:)
 - Při každém pushnutí do větvě master se aplikace sestaví a publikuje a výsledek bude přidán do větvě gh-pages.
   - Což je zdrojový adresář webové aplikace
+- Celý funkční soubor je níže. Jenom upravte řádky kam ukazují ☝️
 
 ```yml
 # source: https://swimburger.net/blog/dotnet/how-to-deploy-aspnet-blazor-webassembly-to-github-pages
@@ -26,6 +27,7 @@ name: Sestavit a nasadit apku # název - nezáleží na něm
 on:
   push:
     branches: [ master ] # když je push na větvi master
+    # změnit na  ☝️  main (vaši hlavní větev)
 env: #proměnné, které můžeme používat dále pomocí env.PUBLISH_DIR
   PUBLISH_DIR: vystup #výstupní složka kam se vybuildí aplikace (tuhle složku to vytvoří, na názvu nezáleží)
   
@@ -41,13 +43,13 @@ jobs:
       with:
         dotnet-version: 6.0.x #verze
     - name: Publish with dotnet #do určené složky publikuje aplikace, v release configuraci
-      run: dotnet publish 04_/PptNemocnice/PptNemocnice.sln --configuration Release --output ${{env.PUBLISH_DIR}}
-      # ☝️ Upravte dle názvu vašeho .sln ☝️
+      run: dotnet publish 04/PptNemocnice/PptNemocnice.sln --configuration Release --output ${{env.PUBLISH_DIR}}
+      # ☝️ Upravte 04/PptNemocnice/PptNemocnice.sln dle názvu vašeho .sln
 
     # změní tag base v index.html from '/' na 'ppt_22' což je gh page k tomuto repu
     - name: Change base-tag in index.html from / to ppt_22
       run: sed -i 's/<base href="\/" \/>/<base href="\/ppt_22\/" \/>/g' ${{env.PUBLISH_DIR}}/wwwroot/index.html
-      # ☝️ Upravte dle názvu vašeho repozitáře ☝️
+      # ☝️ Upravte ppt_22 dle názvu vašeho repozitáře
       
       # zkopíruje index.html do 404.html který je předložen, kdykoliv vstoupíme na stránku, která neexistuje
     - name: copy index.html to 404.html
