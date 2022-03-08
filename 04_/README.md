@@ -113,8 +113,13 @@ jobs:
   - Vytvořte v modelu vlastnost `IsInEditMode`
   - Po kliknutí na tlačítko se změní na true.
 - V případě, že je záznam v edit módu, tak se místo výpisu textů (a datumů) zobrazí textová pole.
-  - Tímto značně naroste velikost kódu. I proto je vhodné si kód celého záznamu odložit do komponenty.
-- Ve finále vznikne něco takového: 
+
+```razor
+ <td><input type="date" @bind-value=item.BoughtDateTime/> </td>
+```
+
+- Tímto značně naroste velikost kódu. I proto je vhodné si kód celého záznamu odložit do komponenty (viz níže).
+- Ve finále vznikne něco takového:
 
 ![](media/edit_komponenta.gif)
 

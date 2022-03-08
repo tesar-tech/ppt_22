@@ -1,4 +1,4 @@
-﻿namespace PptNemocnice;
+﻿namespace PptNemocnice.Shared;
 public class VybaveniModel
 {
 
@@ -9,7 +9,7 @@ public class VybaveniModel
 
     public bool NeedsRevision => DateTime.Now - LastRevision > TimeSpan.FromDays(365*2);
 
-
+    public bool IsInEditMode { get; set; }
     public static List<VybaveniModel> GetTestList()
     {
         List<VybaveniModel> list = new();
@@ -23,6 +23,7 @@ public class VybaveniModel
                 BoughtDateTime = DateTime.Now.AddDays(-rnd.Next(3*365, 20 * 365)),
                 LastRevision = DateTime.Now.AddDays(-rnd.Next(0, 3 * 365)),
             };
+
             //model.
 
             list.Add(model);

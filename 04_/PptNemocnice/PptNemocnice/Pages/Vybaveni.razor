@@ -12,24 +12,45 @@
         </tr>
     </thead>
 
-@foreach (var item in seznamVybaveni)
-{
-    <tr class="@(item.NeedsRevision?"bg-red-300":"")">
-    <td>@item.Name </td>
-    <td>@item.BoughtDateTime.ToString("yyyy-MM-dd") </td>
-    <td>@item.LastRevision.ToString("yyyy-MM-dd") </td>
-    <td>@(item.NeedsRevision?"Ano":"Ne") </td>
+    @foreach (var item in seznamVybaveni)
+    {
 
-     <td class="flex gap-1" >
-         <button @onclick="() => seznamVybaveni.Remove(item)" class="bg-red-400 rounded-sm text-sm px-2 py-1">Smazat</button>
-         <button @onclick="() => item.LastRevision = DateTime.Now" class="bg-blue-400 rounded-sm text-sm px-2 py-1">Provést revizi</button>
-     </td>
-     </tr>
-}
+        @if (!item.IsInEditMode)
+        {
 
-   
+            <tr class="@(item.NeedsRevision?"bg-red-300":"")">
+                <td>@item.Name </td>
+                <td>@item.BoughtDateTime.ToString("yyyy-MM-dd") </td>
+                <td>@item.LastRevision.ToString("yyyy-MM-dd") </td>
+                <td>@(item.NeedsRevision?"Ano":"Ne") </td>
+
+                <td class="flex gap-1">
+                    <button @onclick="() => seznamVybaveni.Remove(item)" class="bg-red-400 rounded-sm text-sm px-2 py-1">Smazat</button>
+                    <button @onclick="() => item.LastRevision = DateTime.Now" class="bg-blue-400 rounded-sm text-sm px-2 py-1">Provést revizi</button>
+                    <button @onclick="() => item.IsInEditMode = true" class="bg-yellow-400 rounded-sm text-sm px-2 py-1">✏️</button>
+                </td>
+            </tr>
+        }else
+        {
+              <tr class="bg-fuchsia-300">
+                <td><input @bind-value=item.Name/> </td>
+                <td><input type="date" @bind-value=item.BoughtDateTime/> </td>
+                <td>@item.LastRevision.ToString("yyyy-MM-dd") </td>
+                <td>@(item.NeedsRevision?"Ano":"Ne") </td>
+
+                <td class="flex gap-1">
+                    <button @onclick="() => item.IsInEditMode = false" class="bg-green-400 rounded-sm text-sm px-2 py-1">Ok</button>
+                    @*<button @onclick="() => item.IsInEditMode = true" class="bg-yellow-400 rounded-sm text-sm px-2 py-1">✏️</button>*@
+                </td>
+            </tr>
+
+        }
+
+    }
+
+
 </table>
-@code{
+@code {
     List<VybaveniModel> seznamVybaveni = VybaveniModel.GetTestList();
 
 
