@@ -46,10 +46,12 @@ jobs:
         dotnet-version: 6.0.x #verze
     - name: Publish with dotnet #do určené složky publikuje aplikace, v release configuraci
       run: dotnet publish 04_/PptNemocnice/PptNemocnice.sln --configuration Release --output ${{env.PUBLISH_DIR}}
-  
+      # ☝️ Upravte dle názvu vašeho .sln ☝️
+
     # změní tag base v index.html from '/' na 'ppt_22' což je gh page k tomuto repu
     - name: Change base-tag in index.html from / to ppt_22
       run: sed -i 's/<base href="\/" \/>/<base href="\/ppt_22\/" \/>/g' ${{env.PUBLISH_DIR}}/wwwroot/index.html
+      # ☝️ Upravte dle názvu vašeho repozitáře ☝️
       
       # zkopíruje index.html do 404.html který je předložen, kdykoliv vstoupíme na stránku, která neexistuje
     - name: copy index.html to 404.html
