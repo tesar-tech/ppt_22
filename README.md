@@ -1,8 +1,10 @@
 # PPT 2022
 
-- [01_Technologie - C# - Blazor základ - hádání čísel](01_Technologie%20-%20C%23%20-%20Blazor%20základ%20-%20hádání%20čísel)
-- [02_Git_A_Github](02_Git_A_Github)
-- [03_Nemocnice_start - jak funguje blazor aplikace](03_Nemocnice_start)
+- [01 Technologie - C# - Blazor základ - hádání čísel](01)
+- [02 Git A Github](02)
+- [03 Nemocnice start - jak funguje blazor aplikace](03)
+- [04 Github action, GH pages, Class Library projekt, Editace záznamu, nullable, EventCallback, Tailwind - defaultní styl](04)
+- [05 Nový záznam, komponenty a jejich komunikace, RenderFragment a ChildComponent, Validace formulářů](05)
 
 
 ## Dobré Blazor tutoriály
