@@ -1,0 +1,24 @@
+﻿@page "/vybaveni"
+@page "/co"
+
+<table class="w-full">
+
+    <thead class="border-b-2 border-slate-500">
+        <tr>
+            <th>Název</th>
+            <th>Datum nákupu</th>
+            <th>Datum poslední revize</th>
+            <th>Potřebuje revizi?</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in seznamVybaveni)
+    {
+        <VybaveniRow Item=item DeleteItemCallback="() => seznamVybaveni.Remove(item)"/>
+    }
+</table>
+
+@code {
+    List<VybaveniModel> seznamVybaveni = VybaveniModel.GetTestList();
+
+}
