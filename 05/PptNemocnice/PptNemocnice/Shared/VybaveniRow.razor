@@ -1,5 +1,4 @@
-﻿
-@if(Item == null) return; 
+﻿@if (Item == null) return;
 @if (!Item.IsInEditMode)
 {
     <tr class="@(Item.NeedsRevision?"bg-red-300":"")">
@@ -15,24 +14,48 @@
         </td>
     </tr>
 }
-else 
+else
 {
- <tr class="px-2 py-1 border-2 border-slate-600">
-                <td><input class="border-2 border-slate-300" @bind-value=Item.Name /> </td>
-                <td><input class="border-2 border-slate-300" type="date" @bind-value=Item.BoughtDateTime /> </td>
-                <td><input class="border-2 border-slate-300" type="date" @bind-value=Item.LastRevision /> </td>
-                <td>@(Item.NeedsRevision?"Ano":"Ne") </td>
+    <tr class="px-2 py-1 border-2 border-slate-600">
+        <td colspan="5">
+            <EditForm Model=Item OnValidSubmit="() => {EditDoneCallback.InvokeAsync();}">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><InputText class="border-2 border-slate-300" @bind-Value=Item.Name /> </td>
+                            <td><input class="border-2 border-slate-300" type="date" @bind-value=Item.BoughtDateTime /> </td>
+                            <td><input class="border-2 border-slate-300" type="date" @bind-value=Item.LastRevision /> </td>
+                            <td>@(Item.NeedsRevision?"Ano":"Ne") </td>
 
-                <td class="flex gap-1">
-                    <button @onclick="() => Item.IsInEditMode = false" class="twbtn bg-green-500">Ok</button>
-                </td>
-            </tr>
+                            <td class="flex gap-1">
+
+                                @if (ChildContent == null)
+                                {
+                                    <button type="submit" class="twbtn bg-green-500">Ok</button>
+                                }
+                                else
+                                {
+                                    @ChildContent
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </EditForm>
+        </td>
+    </tr>
 
 }
 
 @code {
+
     [Parameter] public EventCallback DeleteItemCallback { get; set; }
-    [Parameter] public VybaveniModel? Item { get;set; }
+    [Parameter] public EventCallback EditDoneCallback { get; set; }
+    [Parameter] public VybaveniModel? Item { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
 
 }

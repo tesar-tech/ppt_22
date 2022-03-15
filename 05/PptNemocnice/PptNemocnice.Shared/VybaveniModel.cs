@@ -1,7 +1,13 @@
-﻿namespace PptNemocnice.Shared;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PptNemocnice.Shared;
 public class VybaveniModel
 {
 
+   
+
+    [Required, MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
+    [Display(Name = "Název")]
     public string Name { get; set; } = "";
     public double PriceCzk { get; set; }
     public DateTime BoughtDateTime { get; set; }
@@ -33,6 +39,8 @@ public class VybaveniModel
     }
     public static string RandomString(int length,Random rnd)=>
         new (Enumerable.Range(0, length).Select(_ => (char)rnd.Next('a', 'z')).ToArray());
+
+
 }
 
 
