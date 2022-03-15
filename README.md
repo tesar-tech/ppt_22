@@ -1,5 +1,7 @@
 # PPT 2022
 
+[Nasazená aplikace](https://tesar-tech.github.io/ppt_22/).
+
 - [01 Technologie - C# - Blazor základ - hádání čísel](01)
 - [02 Git A Github](02)
 - [03 Nemocnice start - jak funguje blazor aplikace](03)
