@@ -146,6 +146,15 @@ Validací, kterou se zde zabýváme se jmenuje Data Annotation Validation. Využ
 public string Name { get; set; } = "";
 ```
 
+## Domácí úloha
+
+## Validace dat
+
+- Přidejte modelu vlastnost "Cena" (pro zjednodušení to bude `int`). Zobrazte cenu v tabulce.
+- Přidejte validaci. Cena nesmí být záporná a její maximum je 10 000 000.
+  - Přidejte správné validační zprávy
+  - Využijte komponentu `<ValidationMessage` a zobrazte validační zprávy vždy u daného pole (tedy pro jméno a cenu).
+
 ### Úpravy na editItem
 
 - Úpravy se budou provádět na proměnné `editItem`
@@ -201,9 +210,9 @@ private void TurnOnEdit()
     }
 ```
 
-- Vlastnosti nelze zkopírovat `editingItem = Item`. To by obě proměnné referencovali stejný objekt. My chceme vytvořit nový objekt. 
+- Vlastnosti nelze zkopírovat s pomocí `editingItem = Item`. To by obě proměnné referencovali stejný objekt (takže by se při změně `editItem.Name` změnilo i `Item.Name`). My chceme vytvořit nový objekt.
 
-- Změníme podmínky, jestli ukazovat `Item` nebo `editItem`
+- Změníme podmínky, jestli ukazovat `Item` nebo `editItem` (v závislosti na tom, jestli se proměnná naćhází v editačním modu)
 
 ```razor
 @if (Item != null && !Item.IsInEditMode)
@@ -212,7 +221,7 @@ else if (editingItem != null && editingItem.IsInEditMode)
 {...}
 ```
 
-- Vypnutí editačního módu: 
+- Vypnutí editačního módu (volám při kliknutí na tlačítko Ok nebo při `OnValidSubmit`): 
 
 ```csharp
 private void TurnOffEdit(bool success)
@@ -252,5 +261,4 @@ public void MapTo(VybaveniModel? to)
 
 - Taky byla odebrána akce na tlačítku "Přidej". Automaticky se bude snažit submitnout formulář, tento pokus se odchytí v `OnValidSubmit` (nebo se ukáže hláška validace)
 - Na tlačítku zrušit jsme přidali vlastnost `type="button"`. Defaultně mají tlačítka `type="submit"`, takže by se rušící tlačítko odesílalo formulář. 
-
 
