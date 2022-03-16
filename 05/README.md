@@ -74,6 +74,18 @@ je nutné uvést otevírací i zavírací tag fragmentu:
 
 ## Validace formulářů + možnost zrušení editace 
 
+## Dlaší zdroje
+
+
+- [Návod základní validace](https://blazor-university.com/forms/validation/) (podobné s místním vysvětlením)
+- [Práce s formuláři](https://blazor-university.com/forms/handling-form-submission/)
+- [Video vysvětlující validaci z technického pohledu](https://knowledge-base.havit.cz/2022/01/17/blazor-validace-formularu-jiri-kanda-vzdelavaci-okenko-2-6-2021/) (CZ, 68 minut)
+
+Validací, kterou se zde zabýváme se jmenuje Data Annotation Validation. Využívá totiž anotací dat pomocí atributů. Takováto validace je velmi jednoduchá na implementaci, není však všemocná. Pro pokročilejší scénáře je dobré používat Fluent validation (vypadá to například takto: `RuleFor(p => p.Name).NotEmpty().WithMessage("You must enter a name");`). Více příkladů a návod jak to dostat do Blazoru (standartně se používá v C# na backendu) je [zde](https://chrissainty.com/using-fluentvalidation-for-forms-validation-in-razor-components/).
+
+> V příštích lekcích budeme do aplikace přidávat serverovou část, která bude data přijímat a ukládat do databáze. Je vhodné říct, že jakákoliv validace, kterou podstoupí data na klientovi (ve webovém prohlížeči), je možné obejít a na server poslat data nevalidní. Je proto nutné validaci provádět znovu na serveru. Žádná data, která přicházejí z klienta není možné považovat za bezpečná a vždycky musíte uvažovat o uživateli jako někom, kdo chce vaší aplikaci "narušit". (píšu to už sem, jelikož je skutečně dobré si tento mindset co nejdříve osvojit).
+
+
 ![](media/validace1.png)
 
 - Omezení vstupních dat pouze na validní hodnoty.
