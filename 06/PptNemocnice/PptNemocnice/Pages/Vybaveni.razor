@@ -1,0 +1,45 @@
+﻿@page "/vybaveni"
+@page "/co"
+
+@if(!isInNewMode)
+{
+ <button @onclick="@(() => {isInNewMode = true; newEntity = new(){IsInEditMode = true, Name="novota" }; })" class="twbtn bg-blue-500 my-2">
+    Přidej nový záznam
+</button>
+}
+
+
+<table class="w-full">
+
+    <thead class="border-b-2 border-slate-500">
+        <tr>
+            <th>Název</th>
+            <th>Datum nákupu</th>
+            <th>Datum poslední revize</th>
+            <th>Potřebuje revizi?</th>
+        </tr>
+    </thead>
+    
+    @if(isInNewMode && newEntity!=null)
+    {
+        <VybaveniRow Item=newEntity 
+        EditDoneCallback="() => {isInNewMode = false;newEntity.IsInEditMode = false; seznamVybaveni.Insert(0,newEntity);}">
+                <button type="button" class="twbtn bg-neutral-300" @onclick="() => {isInNewMode = false;}" >Zruš</button>
+                <button type="submit" class="twbtn bg-emerald-500" >Přidej</button>
+         </VybaveniRow>
+
+    }
+    
+
+    @foreach (var item in seznamVybaveni)
+    {
+        <VybaveniRow Item=item DeleteItemCallback="() => seznamVybaveni.Remove(item)"/>
+    }
+</table>
+
+@code {
+    bool isInNewMode;
+    VybaveniModel? newEntity; 
+    List<VybaveniModel> seznamVybaveni = VybaveniModel.GetTestList();
+
+}
