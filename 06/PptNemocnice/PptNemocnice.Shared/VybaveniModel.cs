@@ -9,7 +9,10 @@ public class VybaveniModel
     [Required, MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
     [Display(Name = "Název")]
     public string Name { get; set; } = "";
-    public double PriceCzk { get; set; }
+
+    [Display(Name = "Cena")]
+    [Range(1, 10_000_000, ErrorMessage = "{0} musí být v rozsahu {1} až {2} ")]
+    public int PriceCzk { get; set; }
     public DateTime BoughtDateTime { get; set; }
     public DateTime LastRevision { get; set; }
 
@@ -36,6 +39,26 @@ public class VybaveniModel
         }
         return list;
 
+    }
+
+    public void MapTo(VybaveniModel? to)
+    {
+        if (to == null) return;
+        to.BoughtDateTime = BoughtDateTime;
+        to.LastRevision = LastRevision;
+        to.Name = Name;
+        to.PriceCzk = PriceCzk;
+    }
+
+    public VybaveniModel Copy()
+    {
+        VybaveniModel to = new();
+        to.BoughtDateTime = BoughtDateTime;
+        to.LastRevision = LastRevision;
+        to.IsInEditMode = IsInEditMode;
+        to.Name = Name;
+        to.PriceCzk = PriceCzk;
+        return to;
     }
     public static string RandomString(int length,Random rnd)=>
         new (Enumerable.Range(0, length).Select(_ => (char)rnd.Next('a', 'z')).ToArray());

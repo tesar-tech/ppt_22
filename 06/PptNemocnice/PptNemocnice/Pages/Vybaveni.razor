@@ -17,16 +17,17 @@
             <th>Datum nákupu</th>
             <th>Datum poslední revize</th>
             <th>Potřebuje revizi?</th>
+            <th>Cena</th>
         </tr>
     </thead>
     
     @if(isInNewMode && newEntity!=null)
     {
-        <VybaveniRow Item=newEntity 
-        EditDoneCallback="() => {isInNewMode = false;newEntity.IsInEditMode = false; seznamVybaveni.Insert(0,newEntity);}">
-                <button type="button" class="twbtn bg-neutral-300" @onclick="() => {isInNewMode = false;}" >Zruš</button>
-                <button type="submit" class="twbtn bg-emerald-500" >Přidej</button>
-         </VybaveniRow>
+ <VybaveniRow 
+ EditDoneCallback="(success) => { if(success)seznamVybaveni.Insert(0,newEntity); isInNewMode = false; }" Item=newEntity>
+    <button  class="twbtn bg-teal-500">Přidej</button>
+    <button type="button" @onclick="() => isInNewMode = false" class="twbtn bg-yellow-500">Zrušit</button>
+</VybaveniRow>
 
     }
     
