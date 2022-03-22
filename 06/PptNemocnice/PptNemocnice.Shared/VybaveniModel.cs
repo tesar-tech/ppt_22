@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace PptNemocnice.Shared;
 public class VybaveniModel
 {
 
-   
+
+    public Guid Id { get; set; }
 
     [Required, MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
     [Display(Name = "Název")]
@@ -16,6 +18,7 @@ public class VybaveniModel
     public DateTime BoughtDateTime { get; set; }
     public DateTime LastRevision { get; set; }
 
+    [JsonIgnore]
     public bool NeedsRevision => DateTime.Now - LastRevision > TimeSpan.FromDays(365*2);
 
     public bool IsInEditMode { get; set; }
@@ -27,6 +30,7 @@ public class VybaveniModel
         {
             VybaveniModel model = new()
             {
+                Id = Guid.NewGuid(),
                 Name = RandomString(rnd.Next(5, 25), rnd),
                 PriceCzk = rnd.Next(5000, 10_000_000),
                 BoughtDateTime = DateTime.Now.AddDays(-rnd.Next(3*365, 20 * 365)),
