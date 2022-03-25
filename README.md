@@ -7,6 +7,8 @@
 - [03 Nemocnice start - jak funguje blazor aplikace](03)
 - [04 Github action, GH pages, Class Library projekt, Editace záznamu, nullable, EventCallback, Tailwind - defaultní styl](04)
 - [05 Nový záznam, komponenty a jejich komunikace, RenderFragment a ChildComponent, Validace formulářů](05)
+- [06 - Web Api, Swagger, GET, POST, DELETE, PUT](06)
+- [07]
 
 
 ## Dobré Blazor tutoriály
