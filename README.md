@@ -8,7 +8,8 @@
 - [04 Github action, GH pages, Class Library projekt, Editace záznamu, nullable, EventCallback, Tailwind - defaultní styl](04)
 - [05 Nový záznam, komponenty a jejich komunikace, RenderFragment a ChildComponent, Validace formulářů](05)
 - [06 - Web Api, Swagger, GET, POST, DELETE, PUT](06)
-- [07]
+- [07 - Konzumace API (GET), HttpClient, DI/IoC, CORS](07)
+- [08 - Konzumace API (DELETE, POST, PUT), HttpClient, async/await](08)
 
 
 ## Dobré Blazor tutoriály
