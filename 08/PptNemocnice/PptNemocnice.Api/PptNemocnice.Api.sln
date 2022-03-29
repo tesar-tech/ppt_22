@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PptNemocnice.Api", "PptNemocnice.Api.csproj", "{0BF60575-5C27-4CE3-BC80-86648B7E309F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PptNemocnice.Shared", "..\PptNemocnice.Shared\PptNemocnice.Shared.csproj", "{CFA725B4-026B-486D-8D50-8ABB84281989}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BF60575-5C27-4CE3-BC80-86648B7E309F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BF60575-5C27-4CE3-BC80-86648B7E309F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BF60575-5C27-4CE3-BC80-86648B7E309F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BF60575-5C27-4CE3-BC80-86648B7E309F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA725B4-026B-486D-8D50-8ABB84281989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA725B4-026B-486D-8D50-8ABB84281989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA725B4-026B-486D-8D50-8ABB84281989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA725B4-026B-486D-8D50-8ABB84281989}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84C0BF3B-4C5C-4D69-AF64-CBAE8C5D7A29}
+	EndGlobalSection
+EndGlobal
