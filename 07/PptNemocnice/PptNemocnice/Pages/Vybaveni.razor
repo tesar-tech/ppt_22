@@ -1,5 +1,5 @@
 ﻿@page "/vybaveni"
-@page "/co"
+@inject HttpClient Http
 
 @if(!isInNewMode)
 {
@@ -7,6 +7,15 @@
     Přidej nový záznam
 </button>
 }
+
+@if (seznamVybaveni == null)
+{
+    <div class="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 "> @*načítací animace*@
+        <div class=" border-t-transparent border-solid animate-spin  rounded-full border-teal-600 border-8 h-16 w-16"></div>
+    </div>
+    return;
+}
+
 
 
 <table class="w-full">
@@ -41,6 +50,11 @@
 @code {
     bool isInNewMode;
     VybaveniModel? newEntity; 
-    List<VybaveniModel> seznamVybaveni = VybaveniModel.GetTestList();
+    List<VybaveniModel>? seznamVybaveni;
+
+    protected override async Task OnInitializedAsync()
+    {
+        seznamVybaveni = await Http.GetFromJsonAsync<List<VybaveniModel>?>("vybaveni");
+    }
 
 }

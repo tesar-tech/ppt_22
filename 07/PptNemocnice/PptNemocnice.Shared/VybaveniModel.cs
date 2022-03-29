@@ -5,7 +5,7 @@ namespace PptNemocnice.Shared;
 public class VybaveniModel
 {
 
-
+    
     public Guid Id { get; set; }
 
     [Required, MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
