@@ -12,6 +12,7 @@
             <button @onclick="() => DeleteItemCallback.InvokeAsync()" class="bg-red-400 twbtn">X</button>
             <button @onclick="() => Item.LastRevision = DateTime.Now" class="bg-blue-400 twbtn">Provést revizi</button>
             <button @onclick="() => TurnOnEdit()" class="twbtn bg-amber-300">✏️</button>
+            <a href="vybaveni/@Item.Id" class="underline text-blue-500" >Detail</a>
         </td>
     </tr>
 }
