@@ -1,52 +1,24 @@
-# 08 - Konzumace API (DELETE, POST, PUT), HttpClient, async/await
+# 09 - test 01
 
-## Http klient a DELETE
+Výsledek může vypadat například takto:
 
-- Na stránce `Vybaveni.razor` změňte akci, která se odehrává po zavolání callbacku `DeleteItemCallBack`.
-- Zavolejte metodu `DeleteVybaveni`. Přijme právě položku, kterou má smazat.
-- Na Http klientovy existuje metoda `DeleteAsync`
-  - Zadejte ji cestu, včetně parametrů, které api očekává
-  - Jejím výstupem je `HttpResponseMessage` s propertou `IsSuccessStatusCode`, použijte ji a v případě úspěšného smazání (skrz api) odstraňte položku ze seznamu na klientovi.
+![](media/vysledek.png)
 
-## Http klient - PUT
+- [1] Vytvořte stránku s názvem `RevizePage` (ve správné složce) a přidejte stránku jako odkaz do levého sloupce (s nějaký defaultním parametrem)
+- [1] Stránka bude dostupná například na adrese `revize/ahoj-lidi`
+  - `ahoj-lidi` je příklad zadaného parametru, klidně to může být například `revize/nazdar`
+- [1] Tento parametr se zobrazí na stránce v nadpisu první úrovně **zelenou barvou**.
+  - Že je parametr typu string není třeba v routě specifikovat (když se o to budete snažit, vyrazí to chybu)
 
-- V principu jsou akce POST a PUT dosti podobné. Posílá se celý model.
-- Volá se na callbacku `EditDoneCallback`.
-- Model specifikujete v druhém parametru metody `PutAsJsonAsync`.
-- Nyní nemáme mechanismus, který by při chybě na straně api vrátil provedené změny
-  - Stačilo by uživatele informovat a doporučit obnovení stránky.
+- [1] Stránka bude obsahovat textové pole, tlačítko a místo pro výpis výsledku.
+- V místě pro výpis výsledků se po zadání textového řetězce do textového pole objeví ty revize, které obsahují daný textový řetězec (zjednodušené vyhledávání)
+- Po stisknutí se odešle požadavek na server (api projekt), kde již bude přichystána "databáze" revizí pro filtraci (vizte další kroky).
+- [1] Vytvořte (ve správném projektu) třídu `RevizeModel` a přiřaďte jí vlastnosti: Název a Id (případně ekvivalentní anglické názvy) (časem to propojíme s Vybavením, ale to není předmětem testu).
+- [1] V api projektu musíte vytvořit seznam revizí a naplnit je náhodnými daty. Data budou udržována v privátní proměnné (tak jak to bylo s vybavením).
+- V api projektu musíte vytvořit vhodný endpoint a v Blazor projektu ho vhodně využít.
+  - [1] Blazor projekt odešle správný požadavek (po stisknutí tlačítka) a zpracuje úspěšný výsledek (nemusíte ošetřovat neúspěšné výsledky). Výsledkem toho kroku bude proměnná obsahující revize.
+  - [1] Endpoint přijme string a vrátí list revizí (musíte zvolit vhodnou http metodu)
+    - [1] Vrátí ty revize, jenž obsahují textový řetězec
+  - [1] Blazor projekt vhodně vypíše vyhledané výsledky
 
-## Http klient a POST
 
-- V případě POSTu je nutné vyzvednout přichozí ID nově vytvořené entity a přiřadit ho.
-  - (Id musíme mít, kdybychom ho chtěli třeba rovnou smazat)
-- `PostAsJsonAsync`  také vrací `HttpResponseMessage` a krom status kódu má ještě vlastnost `Content`.
-  - Content obsahuje metodu pro čtení JSONu a převedení na požadovaný typ (`ReadFromJsonAsync`).
-  - Formát je generický parametr (špičaté závorky)
-
-## Domácí úloha - Endpoint vybaveni/{Id}
-
-Tento endpoint využijeme na nové stránce, která bude zobrazovat podrobnější detail jednoho vybavení.
-Aktuálně žádný takový detail nemáme, ten doplníme posléze. Bude to seznam oprav, které připadají k danému vybavení. Teď na stránce pouze vypíšeme vlastnosti jednoho vybavení (jméno, cenu,...)
-
-[route parameters](https://blazor-university.com/routing/route-parameters/)
-
-- Přidejte stránku s názvem `VybaveniDetail`.
-  - route nastavte na "/vybaveni/{Id:guid}", nezapomeňte na direktivu `page`
-  - přidejte parametr `Id`, parametr bude nastaven právě z routy.
-- Do tabulky přidejte odkaz, který bude odkazovat na stránku detailu daného Id.
-
-## Stránka detailu
-
-- Na stránce vytvoříme jednoduchý grid, který zobrazí všechny detaily.
-
-    ```html
-    <div class="grid grid-cols-2"> 
-    <div>Název</div>
-    <div>@item.Name</div>
-    </div>
-    ```
-
-- Nepoužíváme zde tabulku jako takovou (table). Nemusíme specifikovat řádky (tr), ani jednotlivé buňky (td). Stačí pouze říct, že aktuální div je grid a že má 2 sloupce. Vnitřní elementy podle toho přeskládá. V mnohém se HTML grid podobá tomu v XAML.
-  - grid není tak ukecaný a je více přizpůsobivý.
-- V metodě `OnInitializedAsync` načtěte data z API.
