@@ -27,6 +27,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 List<VybaveniModel> seznam = VybaveniModel.GetTestList();
+List<RevizeModel> seznamRevizi = RevizeModel.NahodnySeznam(1000);
+
+app.MapGet("/revize/{vyhledavanyRetezec}", (string vyhledavanyRetezec) =>
+{
+    if (string.IsNullOrWhiteSpace(vyhledavanyRetezec)) return Results.Problem("Parametr musi byt neprazdny");
+    var kdeJeRetezec = seznamRevizi.Where(x => x.Name.Contains(vyhledavanyRetezec));
+    return Results.Json(kdeJeRetezec);
+});
 
 app.MapGet("/vybaveni", () =>
 {
