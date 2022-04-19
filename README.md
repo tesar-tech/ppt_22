@@ -10,6 +10,8 @@
 - [06 - Web Api, Swagger, GET, POST, DELETE, PUT](06)
 - [07 - Konzumace API (GET), HttpClient, DI/IoC, CORS](07)
 - [08 - Konzumace API (DELETE, POST, PUT), HttpClient, async/await](08)
+- [09 - Test](09)
+- [10 - Spojení projektů, Loader komponenta, Databáze, SQLite, EntityFramework, AutoMapper, Migrace](10)
 
 
 ## Dobré Blazor tutoriály

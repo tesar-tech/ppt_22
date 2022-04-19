@@ -1,7 +1,16 @@
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PptNemocnice.Api.Data;
 using PptNemocnice.Shared;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<NemocniceDbContext>(
+    opt => opt.UseSqlite("FileName=Nemocnice.db")
+    );
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,7 +25,7 @@ builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
 var app = builder.Build();
 app.UseCors();
 
-app.MapGet("/", () => "Hello");
+app.MapGet("/", () => "Hellou");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -36,9 +45,9 @@ app.MapGet("/revize/{vyhledavanyRetezec}", (string vyhledavanyRetezec) =>
     return Results.Json(kdeJeRetezec);
 });
 
-app.MapGet("/vybaveni", () =>
+app.MapGet("/vybaveni", (NemocniceDbContext db) =>
 {
-    return seznam;
+    return db.Vybavenis;
 });
 
 app.MapGet("/vybaveni/jensrevizi", (int c) =>
@@ -51,21 +60,25 @@ app.MapGet("/vybaveni/jensrevizi", (int c) =>
 app.MapGet("/vybaveni/{Id}",(Guid Id) =>
 {
     var item = seznam.SingleOrDefault(x => x.Id == Id);
-    if (item == null) return Results.NotFound("takov�to entita neexistuje");
+    if (item == null) return Results.NotFound("takováto entita neexistuje");
     return Results.Json(item);
 });
 
-app.MapPost("/vybaveni", (VybaveniModel prichoziModel) =>
+app.MapPost("/vybaveni", (VybaveniModel prichoziModel,
+    NemocniceDbContext db, IMapper mapper) =>
 {
-    prichoziModel.Id = Guid.NewGuid();
-    seznam.Insert(0, prichoziModel);
-    return Results.Created("/vybaveni",prichoziModel.Id);
+    prichoziModel.Id = Guid.Empty;//vynuluju id, db si idčka ošéfuje sama
+    Vybaveni ent = mapper.Map<Vybaveni>(prichoziModel);//mapovaná na "databázový" typ
+    db.Vybavenis.Add(ent);//přidání do db
+    db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
+
+    return Results.Created("/vybaveni",ent.Id);
 });
 
 app.MapPut("/vybaveni", (VybaveniModel prichoziModel) =>
 {
     var staryZaznam = seznam.SingleOrDefault(x => x.Id == prichoziModel.Id);
-    if (staryZaznam == null) return Results.NotFound("Tento z�znam nen� v seznamu");
+    if (staryZaznam == null) return Results.NotFound("Tento záznam není v seznamu");
     int ind = seznam.IndexOf(staryZaznam);
     seznam.Insert(ind, prichoziModel);
     seznam.Remove(staryZaznam);
@@ -77,7 +90,7 @@ app.MapDelete("/vybaveni/{Id}",(Guid Id ) =>
 {
     var item = seznam.SingleOrDefault(x=> x.Id == Id);
     if (item == null) 
-        return Results.NotFound("Tato polo�ka nebyla nalezena!!");
+        return Results.NotFound("Tato položka nebyla nalezena!!");
     seznam.Remove(item);
     return Results.Ok();
 }

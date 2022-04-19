@@ -14,7 +14,7 @@
 
   ![](media/multiplestartupprojs.png)
 
-- A nebo pomocí `dotnet watch` z terminálu: 
+- A nebo pomocí `dotnet watch` z terminálu:
   ![](media/dotnetwatch.png)
 
 ## Loader komponenta
@@ -97,6 +97,7 @@
 - Přidáme první migraci, která zachytí stav databáze:
   - `dotnet ef migrations add "initial migration"`
   - Aplikace se sestaví a je přidána složka a třída migrace:
+
     ![](media/migrace_soubory.png)
     - Ve třídě jsou v C# kódu 2 metody: `Up` a `Down`, pro updatování databáze na tuto migraci a pro "odmigrování" migrace.
       - `Up` v tomto případě přidává tabulku. `Down` tabulku maže.
@@ -112,10 +113,11 @@
 - Existuje spousta jednoduchých programů na prohlížení SQLite databází. Jedním z nich je [DB Browser for SQLite](https://github.com/sqlitebrowser/sqlitebrowser).
   - Instalace pro Windows: `winget install -e --id DBBrowserForSQLite.DBBrowserForSQLite`
 - Po otevření databáze to bude vypadat přibližně takto:
- ![](media/dbbrowser.png)
+
+  ![](media/dbbrowser.png)
   - Povšimněte si, že datum je uloženo jako TEXT. O převod do C# `DateTime` se stará právě EF.
 
-### Dotazování databáte
+### Dotazování databáze
 
 - Je to skoro stejné jako dotazování "databáze" z proměnné. (A v tom je celé kouzlo a přínos EF)
 - Nicméně třída, kterou vytáhneme z db (`Vybaveni`) je jiná než třída, kterou chceme poslat v jsonu (`VybaveniModel`).
@@ -127,7 +129,8 @@
   - `dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 11.0.0`
 - AutoMapper vyžaduje jistou konfiguraci.
   - Nejdříve je třeba vytvořit profil, ve kterém specifikujeme "mapu" (tedy co se může namapova na co).
-  - Vytvořte třídu `NemocniceMapping` a v jejím konstruktoru:
+  - Vytvořte třídu `NemocniceMapping`, která podědí z třídy `Profile` (také přidejte namespace `AutoMapper`)
+  - V jejím konstruktoru:
   
     ```csharp
     CreateMap<Vybaveni, VybaveniModel>().ReverseMap();
@@ -163,6 +166,13 @@ db.SaveChanges();//ulozeni databaze
 
 ## Domácí úloha
 
-- Přidejte Revize stejným způsobem do databáze.
-- Vytvořte get endpoint na všechny revize. 
-- Dostaňte do databáze nějaká testovací data na revizích. 
+- Dodělejte všechny ostatní endpointy vybavení, tak aby využívaly databázi.
+  - Využijte Automapper (i když to bude fungovat i bez něj (ale časem už moc nebude))
+  - Vyčistěte kód od `seznamVybaveni` (už není potřeba).
+- Přidejte tabulku (třídu) `Revize` do databáze.
+  - Postupujte stejně jako v případě vybavení (vytvoření třídy, přidaní DbSetu, migrace,...)
+- Endpoint revize (ten, který byl přidán v testu) upravte tak aby fungoval s daty z databáze
+  - (žádná data tam ale zatím nejsou)
+  - Odstrňte všechen zbytečný kód týkající se revizí.
+- Dodělejte `Loader` komponentu (pokud nemáte).
+- Stáhněte si zmíněný prohlížeč SQLite databáze (a nebo jakýkoliv jiný). Přidejte data do revizí, ať vám endpoint funguje.

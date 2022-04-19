@@ -4,8 +4,6 @@ using System.Text.Json.Serialization;
 namespace PptNemocnice.Shared;
 public class VybaveniModel
 {
-
-    
     public Guid Id { get; set; }
 
     [Required, MinLength(5, ErrorMessage = "Délka u pole \"{0}\" musí být alespoň {1} znaků")]
@@ -21,6 +19,7 @@ public class VybaveniModel
     [JsonIgnore]
     public bool NeedsRevision => DateTime.Now - LastRevision > TimeSpan.FromDays(365*2);
 
+    [JsonIgnore]
     public bool IsInEditMode { get; set; }
     public static List<VybaveniModel> GetTestList()
     {
