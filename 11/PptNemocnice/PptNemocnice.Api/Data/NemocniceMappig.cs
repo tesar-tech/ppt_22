@@ -9,6 +9,7 @@ public class NemocniceMappig:Profile
     public NemocniceMappig()
     {
         CreateMap<Vybaveni, VybaveniModel>().ReverseMap();
+        CreateMap<Revize, RevizeModel>().ReverseMap();
     }
 
 }
