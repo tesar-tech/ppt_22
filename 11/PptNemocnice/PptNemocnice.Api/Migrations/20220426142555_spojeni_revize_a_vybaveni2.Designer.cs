@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PptNemocnice.Api.Data;
 
@@ -10,9 +11,10 @@ using PptNemocnice.Api.Data;
 namespace PptNemocnice.Api.Migrations
 {
     [DbContext(typeof(NemocniceDbContext))]
-    partial class NemocniceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220426142555_spojeni_revize_a_vybaveni2")]
+    partial class spojeni_revize_a_vybaveni2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.4");
@@ -38,22 +40,6 @@ namespace PptNemocnice.Api.Migrations
                     b.HasIndex("VybaveniId");
 
                     b.ToTable("Revizes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("bbbca371-e28b-4107-845c-ac9823893da4"),
-                            DateTime = new DateTime(2020, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Přísná revize",
-                            VybaveniId = new Guid("aaaca371-e28b-4107-845c-ac9823893da4")
-                        },
-                        new
-                        {
-                            Id = new Guid("dddca371-e28b-4107-845c-ac9823893da4"),
-                            DateTime = new DateTime(2022, 6, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Nicmoc revize",
-                            VybaveniId = new Guid("aaaca371-e28b-4107-845c-ac9823893da4")
-                        });
                 });
 
             modelBuilder.Entity("PptNemocnice.Api.Data.Vybaveni", b =>
@@ -75,22 +61,6 @@ namespace PptNemocnice.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vybavenis");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("aaaca371-e28b-4107-845c-ac9823893da4"),
-                            BoughtDateTime = new DateTime(2017, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "CT",
-                            PriceCzk = 100000
-                        },
-                        new
-                        {
-                            Id = new Guid("111ca371-e28b-4107-845c-ac9823893da4"),
-                            BoughtDateTime = new DateTime(2015, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "MRI",
-                            PriceCzk = 10000
-                        });
                 });
 
             modelBuilder.Entity("PptNemocnice.Api.Data.Revize", b =>

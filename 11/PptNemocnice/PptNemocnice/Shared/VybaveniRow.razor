@@ -10,7 +10,13 @@
 
         <td class="flex gap-1">
             <button @onclick="() => DeleteItemCallback.InvokeAsync()" class="bg-red-400 twbtn">X</button>
+           
             <button @onclick="() => Item.LastRevision = DateTime.Now" class="bg-blue-400 twbtn">Provést revizi</button>
+            @{
+            //todo: místo jednoduché změny datumu se musí přidat entita do revizi v db
+                //viz metoda PridejRevizi
+            }
+
             <button @onclick="() => TurnOnEdit()" class="twbtn bg-amber-300">✏️</button>
             <a href="vybaveni/@Item.Id" class="underline text-blue-500" >Detail</a>
         </td>
@@ -58,39 +64,39 @@ else if(editingItem != null && editingItem.IsInEditMode)
 
 @code {
 
-   VybaveniModel? _Item;
-[Parameter]
-public VybaveniModel? Item
-{
-    get => _Item;
-    set
+    VybaveniModel? _Item;
+    [Parameter]
+    public VybaveniModel? Item
     {
-        _Item = value;
-        if (value != null && value.IsInEditMode)
-            TurnOnEdit();
+        get => _Item;
+        set
+        {
+            _Item = value;
+            if (value != null && value.IsInEditMode)
+                TurnOnEdit();
+        }
     }
-}
 
-private void TurnOnEdit()
-{
-    if (Item != null)
+    private void TurnOnEdit()
     {
-        Item.IsInEditMode = true;
-        editingItem = Item.Copy();
+        if (Item != null)
+        {
+            Item.IsInEditMode = true;
+            editingItem = Item.Copy();
+        }
     }
-}
 
-private void TurnOffEdit(bool success)
-{
-    if (success)
+    private void TurnOffEdit(bool success)
     {
-        editingItem?.MapTo(Item);
+        if (success)
+        {
+            editingItem?.MapTo(Item);
+        }
+        if (Item is not null)
+            Item.IsInEditMode = false;
+        editingItem = null;
+        EditDoneCallback.InvokeAsync(success);
     }
-    if (Item is not null)
-        Item.IsInEditMode = false;
-    editingItem = null;
-    EditDoneCallback.InvokeAsync(success);
-}
 
     VybaveniModel? editingItem;
 
@@ -99,5 +105,13 @@ private void TurnOffEdit(bool success)
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
 
+    private async Task PridejRevizi()
+    {
+
+        //todo: vytvořit revizi (s aktuálním časem).
+        //  Zavolat post /revize (nutno vytvořit). V případě úspěchu změnit datum v LastRevision
+    }
+
+    
 
 }

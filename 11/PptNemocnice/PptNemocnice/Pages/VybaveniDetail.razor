@@ -31,7 +31,8 @@
 
     [Parameter] public Guid Id {get;set;}
 
-     VybaveniModel? item;
+     VybaveniModel? item;//todo: změnit třídu na VybaveniSRevizemaModel (a všude jinde)
+     //todo: vypsat seznam revizí, odstranit co není třeba. 
 
     protected override async Task OnInitializedAsync()
     {

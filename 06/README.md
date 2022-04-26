@@ -2,11 +2,11 @@
 
 V této lekci vytvoříme novou aplikaci - Web Api. To ve finále bude sloužit k ukládání, správě a posílání dat.
 
-Web Api aplikace běží na serveru a klientské aplikace s ní komunikují pomocí REST API. Api a klientská aplikace (v našem případě Blazor WA aplikace) jsou oddělené a posílají si JSON. 
+Web Api aplikace běží na serveru a klientské aplikace s ní komunikují pomocí REST API. Api a klientská aplikace (v našem případě Blazor WA aplikace) jsou oddělené a data si vyměňují pomocí univerzálního JSONu. 
 Díky tomu je možná spolupráce serverové (Web Api) a klientské části nezávisle na technologiích na kterých jsou postaveny. Serverová část může být napsána v Javě, C#, Pythonu, atd. - stále si bude rozumnět s jakoukoliv klientskou technologií (Blazor, Vue, React,...).
 
 V tomto projektu využíváme C# jak na serveru, tak na klientovi. Přesto budeme aplikace držet odděleně.
-Aplikace je možné i provázat, což s sebou přináší nějaké výhody (například pre-rendering).
+Aplikace je možné i provázat, což s sebou přináší nějaké výhody (například možnost pre-renderingu).
 Provázanou Blazor aplikace je defaultní template, pokud zaškrtnete při tvorbě Blazor projektu asp.net core hosted.
 
 ![](media/asp.netcorehosted.png)
@@ -47,9 +47,9 @@ PptNemocnice
         └───...
 ```
 
-## Spuštění aplikace 
+## Spuštění aplikace
 
-Všiměte si parametru `-minimal`. Znamená to, že se vytvoří tzv. minimal web-api. Ve starších verzích .NETu (5 a níž) bylo web api možné postavit na (na první pohled) komplikované struktuře s pomocí kontrolerů. Minimal web-api přichází s velice jednoduchou a uchopitelnou strukturou a veškeré api se dá psát do `Program.cs`. Nese to s sebou i řadu nevýhod. Pro účely výuky je však minimal api dobrou volbou. Můžete vytvoři funkční aplikaci na 4 řádky: 
+Všiměte si parametru `-minimal`. Znamená to, že se vytvoří tzv. minimal web-api. Ve starších verzích .NETu (5 a níž) bylo web api možné postavit na (na první pohled) komplikované struktuře s pomocí kontrolerů. Minimal web-api přichází s velice jednoduchou a uchopitelnou strukturou a veškeré api se dá psát do `Program.cs`. Nese to s sebou i řadu nevýhod. Pro účely výuky je však minimal api dobrou volbou. Můžete vytvoři funkční aplikaci na 4 řádky:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +62,7 @@ Nyní se vypíše `Hello` v případě, že vstoupíne na stránku.
 
 V Program.cs je toho však trochu víc:
 
-- Konfigurace swaggeru 
+- Konfigurace swaggeru
 - Definovaný get endpoint `weatherforcast`, který vrátí vygenerovanou předpovď počasí. 
 - `record`, který je použitý k definovaní dat (nyní si to představte jako třídu, něco podobného jako náš `VybaveniModel`)
 
@@ -87,7 +87,7 @@ Toto nastavení můžete změnit v `launchSettings.json` anebo ho definujete na 
 
 ## Vybavení místo počasí (GET)
 
-- V endpointu get vracejte místo počasí seznam vybavení. 
+- V endpointu get vracejte místo počasí seznam vybavení.
 - Generátor vybavení přesuňte někam do shared projektu (v mojí implementaci je ve třídě `VybaveniModel`, pod statickou metodou `GetTestList`. Není to uplně nejlepší, ale teď to postačí).
 - Vyzkoušejte swagger jestli vrací vybavení.
 - Proměnná `seznam` nám nyní poslouží jako "databáze" pro ukládání a mazání vybavení. Přepíše se pokaždé když restartujeme aplikaci.
@@ -127,7 +127,7 @@ app.MapGet("/vybaveni", () =>
     }
     ```
 
-- Tento json se namapuje na C# objekt `prichoziModel`, poté je možné s ním libovolně pracovat.
+- Tento json se namapuje na C# objekt `prichoziModel`, poté je možné s ním libovolně pracovat (například ho přidat do seznamu).
 
 ## DELETE – mazání vybavení
 
@@ -163,11 +163,11 @@ app.MapGet("/vybaveni", () =>
     );
     ```
 
-  - `{Id}` v chlupatých závorkách se namapuje na `Id` v parametru. 
-  - V seznamu se podívám, jestli existuje nějaké vybavení s takovým id.
-  - Když ne, endpoint vrátí chybovou hlášku se status kódem 404 (NotFound)
-  - Když ano, je vybavení odevráno se zesnamu a vrátí se 200 (Ok)
-    - a na to pak aplikace patřičně zareaguje.
+  - `{Id}` v chlupatých závorkách se namapuje na `Id` v parametru (protože má stejný název).
+  - V seznamu se podíváme, jestli existuje nějaké vybavení s takovým id (`SingleOrDefault`).
+  - Když ne (bude null - to je to `Default`), endpoint vrátí chybovou hlášku se status kódem 404 (NotFound)
+  - Když ano, je vybavení odebráno se seznamu a vrátí se 200 (Ok)
+    - A na to by pak Blazor aplikace patřičně reágovala (vymaže ho z UI).
 
 ## Domácí úloha
 

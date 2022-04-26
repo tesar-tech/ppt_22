@@ -12,7 +12,7 @@
 - [08 - Konzumace API (DELETE, POST, PUT), HttpClient, async/await](08)
 - [09 - Test](09)
 - [10 - Spojení projektů, Loader komponenta, Databáze, SQLite, EntityFramework, AutoMapper, Migrace](10)
-
+- [11 - EF, data seed, propojení entit, 1:N relace](11)
 
 ## Dobré Blazor tutoriály
 

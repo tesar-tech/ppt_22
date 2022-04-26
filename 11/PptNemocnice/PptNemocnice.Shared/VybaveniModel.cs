@@ -15,6 +15,8 @@ public class VybaveniModel
     public int PriceCzk { get; set; }
     public DateTime BoughtDateTime { get; set; }
     public DateTime LastRevision { get; set; }
+    //todo: udělat last revision nullable, pro případ, že není žádná revize
+    //todo: poprat se s nullable revizema (na klientu zobrazit "žádná revize")
 
     [JsonIgnore]
     public bool NeedsRevision => DateTime.Now - LastRevision > TimeSpan.FromDays(365*2);
