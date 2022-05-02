@@ -5,6 +5,9 @@ public class RevizeModel
     public string Name { get; set; } = "";
     public Guid Id { get; set; }
 
+    public Guid VybaveniId { get; set; }
+
+    public DateTime DateTime { get; set; }
     public static List<RevizeModel> NahodnySeznam(int v)
     {
         List<RevizeModel> list = new();

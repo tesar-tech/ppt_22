@@ -10,9 +10,9 @@
     return;
 }
 
-<div class="grid grid-cols-2"> 
+<div class="grid grid-cols-2 max-w-md"> 
 
-  <div class="bg-blue-400">Název</div>
+  <div class="bg-blue-400 ">Název</div>
   <div class="bg-red-500">@item.Name</div>
 
    <div class="bg-blue-400">Cena</div>
@@ -21,21 +21,25 @@
    <div class="bg-blue-400">Nakoupeno</div>
   <div class="bg-red-500">@item.BoughtDateTime.ToString("yyyy-MM-dd")</div>
 
-   <div class="bg-blue-400">Poslení revize</div>
-  <div class="bg-red-500">@item.LastRevision.ToString("yyyy-MM-dd")</div>
+   <div class="col-span-2">Revize:
 
-     <div class="bg-blue-400">Potřebuje revizi</div>
-  <div class="bg-red-500">@(item.NeedsRevision?"Ano":"Ne")</div>
+     @foreach(var rev in item.Revizes)
+        {
+            <div> Nazev: @rev.Name Datum a cas: @rev.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+        }
+    </div>
+
+ @*    <div class="bg-blue-400">Potřebuje revizi</div>
+  <div class="bg-red-500">@(item.NeedsRevision?"Ano":"Ne")</div>*@
 </div>
 @code {
 
     [Parameter] public Guid Id {get;set;}
 
-     VybaveniModel? item;//todo: změnit třídu na VybaveniSRevizemaModel (a všude jinde)
-     //todo: vypsat seznam revizí, odstranit co není třeba. 
+         VybaveniSRevizemaModel? item;
 
     protected override async Task OnInitializedAsync()
     {
-        item = await Http.GetFromJsonAsync<VybaveniModel>($"vybaveni/{Id}");
+        item = await Http.GetFromJsonAsync<VybaveniSRevizemaModel>($"vybaveni/{Id}");
     }
 }

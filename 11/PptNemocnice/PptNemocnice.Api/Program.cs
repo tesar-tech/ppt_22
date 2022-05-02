@@ -43,19 +43,29 @@ app.MapGet("/revize/{vyhledavanyRetezec}", (string vyhledavanyRetezec, Nemocnice
     return Results.Json(kdeJeRetezec);
 });
 
-app.MapGet("/vybaveni", (NemocniceDbContext db) =>
+app.MapPost("/revize", (RevizeModel prichoziModel,
+    NemocniceDbContext db, IMapper mapper) =>
+{
+    prichoziModel.Id = Guid.Empty;//vynuluju id, db si idčka ošéfuje sama
+    Revize ent = mapper.Map<Revize>(prichoziModel);//mapovaná na "databázový" typ
+    db.Revizes.Add(ent);//přidání do db
+    db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
+
+    return Results.Created("/revize", ent.Id);
+});
+
+app.MapGet("/vybaveni", (NemocniceDbContext db, IMapper mapper) =>
 {
 
     var ents = db.Vybavenis.Include(x => x.Revizes);
 
+    List<VybaveniModel> models = new();
     foreach (var ent in ents)
     {
-        //todo: použít mapper a přidat poslední revizi
+        var vybModel = mapper.Map<VybaveniModel>(ent);
+        vybModel.LastRevision = ent.Revizes.OrderByDescending(x => x.DateTime).FirstOrDefault()?.DateTime;
+        models.Add(vybModel);
     }
-
-    
-    List<VybaveniModel> models = new();
-    //
     return Results.Json(models);
 });
 
@@ -70,7 +80,6 @@ app.MapGet("/vybaveni/{Id}", (Guid Id, NemocniceDbContext db, IMapper mapper) =>
  {
      var item = db.Vybavenis.Include(x=>x.Revizes).SingleOrDefault(x => x.Id == Id);
      if (item == null) return Results.NotFound("takováto entita neexistuje");
-     //todo: specifikovat mapping
      return Results.Json(mapper.Map<VybaveniSRevizemaModel>(item));
  });
 

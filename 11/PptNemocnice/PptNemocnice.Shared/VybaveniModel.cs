@@ -14,9 +14,7 @@ public class VybaveniModel
     [Range(1, 10_000_000, ErrorMessage = "{0} musí být v rozsahu {1} až {2} ")]
     public int PriceCzk { get; set; }
     public DateTime BoughtDateTime { get; set; }
-    public DateTime LastRevision { get; set; }
-    //todo: udělat last revision nullable, pro případ, že není žádná revize
-    //todo: poprat se s nullable revizema (na klientu zobrazit "žádná revize")
+    public DateTime? LastRevision { get; set; }
 
     [JsonIgnore]
     public bool NeedsRevision => DateTime.Now - LastRevision > TimeSpan.FromDays(365*2);
