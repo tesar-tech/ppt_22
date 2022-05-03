@@ -1,23 +1,23 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:62402",
-      "sslPort": 44316
+      "applicationUrl": "http://localhost:60030/",
+      "sslPort": 44377
     }
   },
   "profiles": {
     "PptNemocnice.Api": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7212;http://localhost:5016",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:7212;http://localhost:5016",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",

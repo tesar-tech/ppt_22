@@ -5,12 +5,12 @@ using PptNemocnice.Shared;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<NemocniceDbContext>(
     opt => opt.UseSqlite("FileName=Nemocnice.db")
     );
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,12 +18,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
     policy.WithOrigins("https://localhost:7132")
-    .WithMethods("GET", "POST", "PUT", "DELETE")
-    .AllowAnyHeader()
+          .WithMethods("GET", "POST", "PUT", "DELETE")
+          .AllowAnyHeader()
 ));
 
 var app = builder.Build();
 app.UseCors();
+
 
 app.MapGet("/", () => "Hellou");
 // Configure the HTTP request pipeline.
@@ -43,10 +44,10 @@ app.MapGet("/revize/{vyhledavanyRetezec}", (string vyhledavanyRetezec, Nemocnice
     return Results.Json(kdeJeRetezec);
 });
 
-app.MapPost("/revize", (RevizeModel prichoziModel,
-    NemocniceDbContext db, IMapper mapper) =>
+app.MapPost("/revize", (RevizeModel prichoziModel,NemocniceDbContext db, IMapper mapper) =>
 {
     prichoziModel.Id = Guid.Empty;//vynuluju id, db si idčka ošéfuje sama
+    prichoziModel.DateTime = DateTime.UtcNow;//datum pridame na serveru
     Revize ent = mapper.Map<Revize>(prichoziModel);//mapovaná na "databázový" typ
     db.Revizes.Add(ent);//přidání do db
     db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
@@ -54,20 +55,6 @@ app.MapPost("/revize", (RevizeModel prichoziModel,
     return Results.Created("/revize", ent.Id);
 });
 
-app.MapGet("/vybaveni", (NemocniceDbContext db, IMapper mapper) =>
-{
-
-    var ents = db.Vybavenis.Include(x => x.Revizes);
-
-    List<VybaveniModel> models = new();
-    foreach (var ent in ents)
-    {
-        var vybModel = mapper.Map<VybaveniModel>(ent);
-        vybModel.LastRevision = ent.Revizes.OrderByDescending(x => x.DateTime).FirstOrDefault()?.DateTime;
-        models.Add(vybModel);
-    }
-    return Results.Json(models);
-});
 
 app.MapGet("/vybaveni/jensrevizi", (int c) =>
 {
@@ -96,7 +83,7 @@ app.MapPost("/vybaveni", (VybaveniModel prichoziModel,
 
 app.MapPut("/vybaveni", (VybaveniModel prichoziModel, NemocniceDbContext db, IMapper mapper) =>
 {
-    var staryZaznam = db.Vybavenis.SingleOrDefault(x => x.Id == prichoziModel.Id);
+    Vybaveni? staryZaznam = db.Vybavenis.SingleOrDefault(x => x.Id == prichoziModel.Id);
     if (staryZaznam == null) return Results.NotFound("Tento záznam není v seznamu");
     mapper.Map(prichoziModel, staryZaznam);
     db.SaveChanges();
@@ -114,6 +101,7 @@ app.MapDelete("/vybaveni/{Id}", (Guid Id, NemocniceDbContext db, IMapper mapper)
      return Results.Ok();
  }
 );
+app.MapControllers();
 
 
 app.Run();

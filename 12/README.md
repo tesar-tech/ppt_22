@@ -43,20 +43,14 @@
 - Nastavení v appsetting.
 - Vytvořte log v kontrolerech. Například -> "Byla přidána revize.."
 
+## dú: Úkony
 
-## Seznam úkonů s vybavením
+- Vytvořte funkcionalitu úkonů.
+- Úkon je proveden s vybavením (například provedený CT scan) a je nutné jej zaznamenávat.
+- Bude možné se podívat na úkony provedené s každým vybavním.
 
-- Úkony na vybavení je nutné zaznamenat (například provedený CT scan)
 - Vymyslete:
-  - jaké vlastnosti se budou ukládat
+  - jaké vlastnosti se budou ukládat. Seznam úkonů je důležitý například pro pojišťovnu.
   - s čím je to propojeno
-  - jakým způsobem se to bude zaznamenávat
+  - jakým způsobem se to bude zaznamenávat  (jak bude fungovat UI)
 - Úkony implementujte (jak api tak klientsou část)
-(celkem úmyslně je zadání vágní)
-
-- Dále implementujte: 
-  - Nelze provádět úkony na vybavení, které má revizi starší než 2 roky. 
-  - Přidejte tabulku pracovníků, ktří daný úkon provádí (jsou za něj zodpovědní).
-    - Například: Radiologický asistent, který provedl CT vyšetření. Doktor, který při operaci využil elektrokauter.
-  - Umožněte vypsat všechny lidi, kteří kdy provedli úkon na daném vybavení. 
-    - implementujte řazení dle času úkonu, dle jména pracovníka

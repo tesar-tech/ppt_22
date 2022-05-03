@@ -122,11 +122,11 @@ else if (editingItem != null && editingItem.IsInEditMode)
 
     private async Task PridejRevizi()
     {
-        RevizeModel novaRevize = new() { Name = "Nova revize", VybaveniId = Item!.Id, DateTime = DateTime.Now };
-        var resp = await Http.PostAsJsonAsync("revize", novaRevize);
+        RevizeModel novaRevize = new() { Name = "Nova revize", VybaveniId = Item!.Id };
+        var resp = await Http.PostAsJsonAsync($"revize", novaRevize);
         if (!resp.IsSuccessStatusCode) return;
 
-        novaRevize.Id = await resp.Content.ReadFromJsonAsync<Guid>();
+        //novaRevize.Id = await resp.Content.ReadFromJsonAsync<Guid>();
         Item.LastRevision = novaRevize.DateTime;
 
     }
