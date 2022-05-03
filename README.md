@@ -13,6 +13,7 @@
 - [09 - Test](09)
 - [10 - Spojení projektů, Loader komponenta, Databáze, SQLite, EntityFramework, AutoMapper, Migrace](10)
 - [11 - EF, data seed, propojení entit, 1:N relace](11)
+- [12 - Kontrolery, logging](12)
 
 ## Dobré Blazor tutoriály
 

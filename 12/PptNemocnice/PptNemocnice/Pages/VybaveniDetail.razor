@@ -1,0 +1,45 @@
+﻿@page "/vybaveni/{Id:guid}"
+@inject HttpClient Http
+
+
+<h3>Detail vybavení</h3>
+
+@if (item == null)
+{
+       <Loader/>
+    return;
+}
+
+<div class="grid grid-cols-2 max-w-md"> 
+
+  <div class="bg-blue-400 ">Název</div>
+  <div class="bg-red-500">@item.Name</div>
+
+   <div class="bg-blue-400">Cena</div>
+  <div class="bg-red-500">@item.PriceCzk</div>
+
+   <div class="bg-blue-400">Nakoupeno</div>
+  <div class="bg-red-500">@item.BoughtDateTime.ToString("yyyy-MM-dd")</div>
+
+   <div class="col-span-2">Revize:
+
+     @foreach(var rev in item.Revizes)
+        {
+            <div> Nazev: @rev.Name Datum a cas: @rev.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+        }
+    </div>
+
+ @*    <div class="bg-blue-400">Potřebuje revizi</div>
+  <div class="bg-red-500">@(item.NeedsRevision?"Ano":"Ne")</div>*@
+</div>
+@code {
+
+    [Parameter] public Guid Id {get;set;}
+
+         VybaveniSRevizemaModel? item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await Http.GetFromJsonAsync<VybaveniSRevizemaModel>($"vybaveni/{Id}");
+    }
+}

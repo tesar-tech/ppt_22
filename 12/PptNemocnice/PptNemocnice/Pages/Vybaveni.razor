@@ -1,0 +1,84 @@
+﻿@page "/vybaveni"
+@page "/co"
+@inject HttpClient Http
+
+@if (!isInNewMode)
+{
+    <button @onclick="@(() => {isInNewMode = true; newEntity = new(){IsInEditMode = true, Name="novota" }; })" class="twbtn bg-blue-500 my-2">
+        Přidej nový záznam
+    </button>
+}
+
+@if (seznamVybaveni == null)
+{
+   <Loader/>
+    return;
+}
+
+
+<table class="w-full">
+
+    <thead class="border-b-2 border-slate-500">
+        <tr>
+            <th>Název</th>
+            <th>Datum nákupu</th>
+            <th>Datum poslední revize</th>
+            <th>Potřebuje revizi?</th>
+            <th>Cena</th>
+        </tr>
+    </thead>
+
+    @if (isInNewMode && newEntity != null)
+    {
+        <VybaveniRow EditDoneCallback="async (success) => { if(success) await AddEntity(newEntity) ; isInNewMode = false; }" Item=newEntity>
+            <button class="twbtn bg-teal-500">Přidej</button>
+            <button type="button" @onclick="() => isInNewMode = false" class="twbtn bg-yellow-500">Zrušit</button>
+        </VybaveniRow>
+
+    }
+
+
+    @foreach (var item in seznamVybaveni)
+    {
+        <VybaveniRow EditDoneCallback="async (success) => {if(success) await UpdateEntity(item);}" Item=item DeleteItemCallback="() => DeleteVybaveni(item)" />
+    }
+</table>
+
+@code {
+
+    bool isInNewMode;
+    VybaveniModel? newEntity;
+    List<VybaveniModel>? seznamVybaveni;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        seznamVybaveni = await Http.GetFromJsonAsync<List<VybaveniModel>?>("vybaveni");
+    }
+
+
+    async Task DeleteVybaveni(VybaveniModel item)
+    {
+        var resp = await Http.DeleteAsync($"vybaveni/{item.Id}");
+
+        if (resp.IsSuccessStatusCode)
+            seznamVybaveni?.Remove(item);
+    }
+
+    async Task AddEntity(VybaveniModel item)
+    {
+        var resp = await Http.PostAsJsonAsync("vybaveni", item);
+        if (!resp.IsSuccessStatusCode) return;
+
+        item.Id = await resp.Content.ReadFromJsonAsync<Guid>();
+        seznamVybaveni?.Insert(0, item);
+    }
+
+    async Task UpdateEntity(VybaveniModel item)
+    {
+        var resp = await Http.PutAsJsonAsync("vybaveni", item);
+    }
+
+
+}
