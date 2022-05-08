@@ -23,10 +23,10 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build  12/PptNemocnice/PptNemocnice/PptNemocniceApi.csproj.csproj --configuration Release
+        run: dotnet build  12/PptNemocnice/PptNemocnice/PptNemocniceApi.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish  12/PptNemocnice/PptNemocnice/PptNemocniceApi.csproj.csproj.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish  12/PptNemocnice/PptNemocnice/PptNemocniceApi.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
