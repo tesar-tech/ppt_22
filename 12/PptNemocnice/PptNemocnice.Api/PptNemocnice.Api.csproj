@@ -19,11 +19,10 @@
 		<ProjectReference Include="..\PptNemocnice.Shared\PptNemocnice.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(Configuration)'=='Release'" >
-		
+	<!--<ItemGroup Condition="'$(Configuration)'=='Release'" >
 	  <None  Update="Nemocnice.db"  >
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>
