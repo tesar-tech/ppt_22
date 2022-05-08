@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<NemocniceDbContext>(
-    opt => opt.UseSqlite("FileName=.\\Nemocnice.db")
+    opt => opt.UseSqlite("FileName=Nemocnice.db")
     );
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
