@@ -102,8 +102,8 @@ app.MapDelete("/vybaveni/{Id}", (Guid Id, NemocniceDbContext db, IMapper mapper)
  }
 );
 app.MapControllers();
+app.Services.CreateScope().ServiceProvider.GetRequiredService<NemocniceDbContext>().Database.Migrate();
 app.Run();
-
 
 
 //record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
