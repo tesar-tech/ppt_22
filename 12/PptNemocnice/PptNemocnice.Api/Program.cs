@@ -56,9 +56,9 @@ app.MapPost("/revize", (RevizeModel prichoziModel,NemocniceDbContext db, IMapper
 });
 
 
-app.MapGet("/vybaveni/cosi", (int c) =>
+app.MapGet("/vybaveni/cosi", (int c, NemocniceDbContext db) =>
 {
-    app.Services.CreateScope().ServiceProvider.GetRequiredService<NemocniceDbContext>().Database.Migrate();
+    db.Database.Migrate();
     return Results.Ok();
     //return seznam.Where(x=>!x.NeedsRevision);
 });
