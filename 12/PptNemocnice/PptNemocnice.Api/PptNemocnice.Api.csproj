@@ -15,15 +15,15 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup>	
 		<ProjectReference Include="..\PptNemocnice.Shared\PptNemocnice.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(Configuration)'=='Release'" >
+	<!--<ItemGroup Condition="'$(Configuration)'=='Debug'" >
 		
 	  <None  Update="Nemocnice.db"  >
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-	</ItemGroup>
+	</ItemGroup>-->
 
 </Project>
