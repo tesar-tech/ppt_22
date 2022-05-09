@@ -55,52 +55,17 @@ app.MapPost("/revize", (RevizeModel prichoziModel,NemocniceDbContext db, IMapper
     return Results.Created("/revize", ent.Id);
 });
 
-
-app.MapGet("/vybaveni/jensrevizi", (int c) =>
+app.MapPost("/ukon", (UkonModel ukonModel, NemocniceDbContext db, IMapper mapper) =>
 {
-    //return seznam.Where(x=>!x.NeedsRevision);
-});
-
-
-
-app.MapGet("/vybaveni/{Id}", (Guid Id, NemocniceDbContext db, IMapper mapper) =>
- {
-     var item = db.Vybavenis.Include(x=>x.Revizes).SingleOrDefault(x => x.Id == Id);
-     if (item == null) return Results.NotFound("takováto entita neexistuje");
-     return Results.Json(mapper.Map<VybaveniSRevizemaModel>(item));
- });
-
-app.MapPost("/vybaveni", (VybaveniModel prichoziModel,
-    NemocniceDbContext db, IMapper mapper) =>
-{
-    prichoziModel.Id = Guid.Empty;//vynuluju id, db si idčka ošéfuje sama
-    Vybaveni ent = mapper.Map<Vybaveni>(prichoziModel);//mapovaná na "databázový" typ
-    db.Vybavenis.Add(ent);//přidání do db
-    db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
-
-    return Results.Created("/vybaveni", ent.Id);
-});
-
-app.MapPut("/vybaveni", (VybaveniModel prichoziModel, NemocniceDbContext db, IMapper mapper) =>
-{
-    Vybaveni? staryZaznam = db.Vybavenis.SingleOrDefault(x => x.Id == prichoziModel.Id);
-    if (staryZaznam == null) return Results.NotFound("Tento záznam není v seznamu");
-    mapper.Map(prichoziModel, staryZaznam);
+    ukonModel.Id = Guid.Empty;
+    Ukon ent = mapper.Map<Ukon>(ukonModel);
+    db.Ukons.Add(ent);
     db.SaveChanges();
-    return Results.Ok();
+    return Results.Created("/ukon", ent.Id);
 });
 
 
-app.MapDelete("/vybaveni/{Id}", (Guid Id, NemocniceDbContext db, IMapper mapper) =>
- {
-     var item = db.Vybavenis.SingleOrDefault(x => x.Id == Id);
-     if (item == null)
-         return Results.NotFound("Tato položka nebyla nalezena!!");
-     db.Remove(item);
-     db.SaveChanges();
-     return Results.Ok();
- }
-);
+
 app.MapControllers();
 
 

@@ -12,4 +12,5 @@ public class Vybaveni
 
     //public DateTime LastRevision { get; set; } //není potřeba, už je to ve Revizes
     public List<Revize> Revizes { get; set; } = new();
+    public List<Ukon> Ukons { get; set; } = new();
 }

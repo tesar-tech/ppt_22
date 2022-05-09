@@ -1,0 +1,61 @@
+﻿@page "/ukon/new"
+@inject HttpClient Http
+@inject NavigationManager Nm;
+@if (VybaveniId == null)
+{
+    <div>Potřebujeme znát id vybavení</div>
+    return;
+}
+@if (chyba is not null)
+{
+    <div class="text-red-500 font-bold">
+        @chyba
+    </div>
+}
+
+<div class="container mx-auto">
+    <div class="max-w-xl p-5 mx-auto my-10 bg-white rounded-md border-solid border-2 border-sky-600">
+        <div class="text-center">
+            <h2>Přidání nového vybavení</h2>
+        </div>
+        <EditForm Model=ukon OnValidSubmit="SendUkon">
+
+            <div class="mb-6">
+                <label for="nazev" class="block mb-2 text-sm text-gray-600">Detail:</label>
+                <InputText @bind-Value=ukon.Detail class="w-full px-4 py-2 border border-gray-300 outline-none focus:border-gray-400 rounded-md" />
+            </div>
+            <div class="mb-6">
+                <label for="info" class="block mb-2 text-sm text-gray-600">Kód pro pojišťovnu:</label>
+                <InputText @bind-Value=ukon.Kod class="w-full px-4 py-2 border border-gray-300 outline-none focus:border-gray-400 rounded-md" />
+            </div>
+            <div class="mb-6">
+                <label for="date" class="block mb-2 text-sm text-gray-600">Datum:</label>
+                <input type="datetime" @bind-value=@ukon.DateTime class="w-full px-4 py-2 border border-gray-300 outline-none focus:border-gray-400 rounded-md" />
+
+            </div>
+            <button class="twbtn bg-blue-400">Přidat úkon</button>
+            <a class="twbtn bg-yellow-400 inline-block" href="/vybaveni/@VybaveniId">Zrušit a zpět na detail</a>
+        </EditForm>
+    </div>
+</div>
+
+
+@code {
+    private UkonModel ukon = new();
+    [SupplyParameterFromQuery,Parameter] public Guid? VybaveniId { get; set; }
+    string? chyba;
+    async Task SendUkon()
+    {
+        if (VybaveniId == null) return;
+        ukon.VybaveniId = (Guid)VybaveniId;
+        var resp = await Http.PostAsJsonAsync("ukon", ukon);
+        if (!resp.IsSuccessStatusCode)
+        {
+            chyba = "něco se pokazilo při posílání, zkuste to znovu";
+            return;   
+        }
+
+        Nm.NavigateTo($"vybaveni/{VybaveniId}");
+
+    }
+}

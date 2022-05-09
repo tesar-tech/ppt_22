@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace PptNemocnice.Shared;
-public class VybaveniSRevizemaModel
+public class VybaveniDetailModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";
@@ -10,6 +10,7 @@ public class VybaveniSRevizemaModel
     public DateTime BoughtDateTime { get; set; }
 
     public List<RevizeModel> Revizes { get; set; } = new();
+    public List<UkonModel> Ukons { get; set; } = new();
 
 }
 

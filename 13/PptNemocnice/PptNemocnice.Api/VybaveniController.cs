@@ -38,8 +38,43 @@ public class VybaveniController:ControllerBase
         return models;
     }
 
+    [HttpGet("{id}")]//vybaveni
+    public ActionResult<VybaveniDetailModel> GetOneVybaveni( Guid id)
+    {
+        var item = _db.Vybavenis.Include(x => x.Revizes).Include(x => x.Ukons).SingleOrDefault(x => x.Id == id);
+        if (item == null) return NotFound("takováto entita neexistuje");
+        return _mapper.Map<VybaveniDetailModel>(item);
+    }
 
-    //vybaveni/a98179b3-9744-43d8-9655-a8793b5752a7
-    //[HttpGet("detail/{id}")]//vybaveni/detail/a98179b3-9744-43d8-9655-a8793b5752a7
-    //[HttpGet(Name ="prvni")]//vybaveni/prvni
+    [HttpPost]
+    public ActionResult<VybaveniDetailModel> AddVybaveni(VybaveniModel prichoziModel)
+    {
+        prichoziModel.Id = Guid.Empty;//vynuluju id, db si idčka ošéfuje sama
+        Vybaveni ent = _mapper.Map<Vybaveni>(prichoziModel);//mapovaná na "databázový" typ
+        _db.Vybavenis.Add(ent);//přidání do db
+        _db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
+
+        return Created("/vybaveni", ent.Id);
+    }
+
+    [HttpPut]
+    public ActionResult EditVybaveni(VybaveniModel prichoziModel)
+    {
+        Vybaveni? staryZaznam = _db.Vybavenis.SingleOrDefault(x => x.Id == prichoziModel.Id);
+        if (staryZaznam == null) return NotFound("Tento záznam není v seznamu");
+        _mapper.Map(prichoziModel, staryZaznam);
+        _db.SaveChanges();
+        return Ok();
+    }
+
+    [HttpDelete]
+    public ActionResult DeleteVybaveni(Guid Id)
+    {
+        var item = _db.Vybavenis.SingleOrDefault(x => x.Id == Id);
+        if (item == null)
+            return NotFound("Tato položka nebyla nalezena!!");
+        _db.Remove(item);
+        _db.SaveChanges();
+        return Ok();
+    }
 }

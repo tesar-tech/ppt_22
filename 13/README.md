@@ -1,4 +1,4 @@
-# 13 Logging
+# 13 Nasazení do Azure, Logging
 
 ## Publikování aplikace do Microsof Azure
 
