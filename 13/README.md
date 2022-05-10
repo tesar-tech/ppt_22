@@ -167,13 +167,14 @@
 - Nastavení v appsetting.
 - Vytvořte log v kontrolerech. Například -> "Byla přidána revize.."
 
+## dú:Doktoři
 
-//draft
-## ...Doktoři
+Implementujte následující
 
-- Dále implementujte: 
-  - Nelze provádět úkony na vybavení, které má revizi starší než 2 roky. 
-  - Přidejte tabulku pracovníků, ktří daný úkon provádí (jsou za něj zodpovědní).
-    - Například: Radiologický asistent, který provedl CT vyšetření. Doktor, který při operaci využil elektrokauter.
-  - Umožněte vypsat všechny lidi, kteří kdy provedli úkon na daném vybavení. 
-    - implementujte řazení dle času úkonu, dle jména pracovníka
+- Přidejte tlačítko "přidej revizi" na detail vybavení (stejná funkcionalita jako v seznamu vybavení)
+- Zamezte přidávání úkonu u vybavení, které má revizi starší než 2 roky.
+  - Zamezit tomu musíte na serveru i na klientovi.
+  - Implementujte to tak, aby v případě starší revize a nemožnosti přidat úkon bylo tlačítko (nebo odkaz) neaktivní s patřičnou hláškou.
+    - V případě, že se přidá čerstvá revize, tlačítko se zaktivní ihned (bez nutnosti obnovit stránku).
+    - V případě, že se chyba odhalí až na serveru, vraťte patřičný http kód s patřičnou chybou..
+      - (můžete to pak otestovat ve swaggeru, kde vám nebude "překážet" zamezující implementace na klientovi)

@@ -25,6 +25,7 @@ public class VybaveniController:ControllerBase
     [HttpGet]//vybaveni
     public ActionResult<List<VybaveniModel>> GetVybaveni()
     {
+       
         var ents = _db.Vybavenis.Include(x => x.Revizes);
 
         List<VybaveniModel> models = new();
