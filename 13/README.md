@@ -167,7 +167,7 @@
 - Nastavení v appsetting.
 - Vytvořte log v kontrolerech. Například -> "Byla přidána revize.."
 
-## dú:Doktoři
+## dú:zamezení úkonu
 
 Implementujte následující
 
