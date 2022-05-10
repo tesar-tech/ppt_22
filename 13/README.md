@@ -94,7 +94,7 @@
   - dalším prostředím je `Staging` a `Production`.
 - Nasazené aplikaci "vnutíme" Production.
   - launchSetting.json se při publikování aplikace na server nedostane
-  - řekneme jí to v Azure s pomocí konfigurace
+  - řekneme jí to v Azure s pomocí konfigurace (tento krok dělat nemusíme, jelikož `Production` je [defaultním nastavením](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-6.0#azure-app-service))
    ![](media/msazureconfig.png) 
   - Nyní můžeme používad odbočku `app.Environment.IsProduction()`
   - Nicméně je lepší používat appsettings.json konfiguraci:
