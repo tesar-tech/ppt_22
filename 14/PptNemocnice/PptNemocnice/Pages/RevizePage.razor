@@ -1,0 +1,35 @@
+﻿@page "/revize/{Pozdrav}"
+@inject HttpClient Http
+
+<h1 class="text-green-500">@Pozdrav</h1> 
+
+<div>
+    <input class="border" type="text" @bind-value=vyhledavaniString />
+    <button @onclick="() => VyhledavaniClick()" type="button" class="twbtn bg-emerald-500">Vyhledej</button>
+    @if (seznamReviziPoVyhledani is not null)
+    {
+        
+    <div>
+     @foreach (var rev in seznamReviziPoVyhledani)
+    {
+        <div>Id: @rev.Id     Jmeno: @rev.Name</div>
+    }
+        </div>
+    }
+    else
+    {
+        
+    }
+</div>
+
+
+@code {
+    [Parameter] public string Pozdrav { get; set; } = "";
+    string vyhledavaniString = "";
+    List<RevizeModel>? seznamReviziPoVyhledani;
+
+    async Task VyhledavaniClick()
+    {
+       seznamReviziPoVyhledani = await Http.GetFromJsonAsync<List<RevizeModel>>($"revize/{vyhledavaniString}");
+    }
+}

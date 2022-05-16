@@ -1,0 +1,136 @@
+﻿@inject HttpClient Http
+@if (Item == null) return;
+@if (Item != null && !Item.IsInEditMode)
+{
+    <tr class="@(Item.NeedsRevision?"bg-red-300":"")">
+        <td>@Item.Name </td>
+        <td>@Item.BoughtDateTime.ToString("yyyy-MM-dd") </td>
+        <td>
+            @if (Item.LastRevision == null)
+            {
+                <span>Zatím bez revize</span>
+            }
+            else
+            {
+                <span> @(((DateTime)Item.LastRevision).ToString("yyyy-MM-dd"))</span>
+            }
+        </td>
+        <td>@(Item.NeedsRevision?"Ano":"Ne") </td>
+        <td>@Item.PriceCzk </td>
+
+        <td class="flex gap-1">
+            <button @onclick="() => DeleteItemCallback.InvokeAsync()" class="bg-red-400 twbtn">X</button>
+            <button @onclick="PridejRevizi" class="bg-blue-400 twbtn">Provést revizi</button>
+            <button @onclick="() => TurnOnEdit()" class="twbtn bg-amber-300">✏️</button>
+            <a href="vybaveni/@Item.Id" class="underline text-blue-500">Detail</a>
+        </td>
+    </tr>
+}
+else if (editingItem != null && editingItem.IsInEditMode)
+{
+    <tr class="px-2 py-1 border-2 border-slate-600">
+        <td colspan="6">
+            <EditForm Model=editingItem OnValidSubmit="() => TurnOffEdit(true)">
+                <DataAnnotationsValidator />
+                @*<ValidationSummary />*@
+                <table>
+                    <tr>
+                        <td>
+                            <InputText class="border-2 border-slate-300" @bind-Value=@editingItem.Name />
+                            <ValidationMessage For="() => editingItem.Name" />
+                        </td>
+                        <td> <InputDate class="border-2 border-slate-300" @bind-Value=@editingItem.BoughtDateTime /> </td>
+                        <td>
+                            @if (editingItem.LastRevision == null)
+                            {
+                                <span>Zatím bez revize</span>
+                            }
+                            else
+                            {
+                                <span> @(((DateTime)editingItem.LastRevision).ToString("yyyy-MM-dd"))</span>
+                            }
+                        </td>
+                        <td>@(editingItem.NeedsRevision?"Ano":"Ne") </td>
+                        <td>
+                            <InputNumber class="border-2 border-slate-300" @bind-Value=@editingItem.PriceCzk />
+                            <ValidationMessage For="() => editingItem.PriceCzk" />
+
+                        </td>
+
+                        <td class="flex gap-1">
+                            @if (ChildContent == null)
+                            {
+
+                                <button class="border-[1px] border-amber-600 rounded-sm text-sm px-2 py-1">Ok</button>
+                                <button @onclick="()=> TurnOffEdit(false)" type="button" class="border-[1px] border-amber-600 rounded-sm text-sm px-2 py-1">Zruš</button>
+                            }
+                            else
+                            {
+                                @ChildContent
+                            }
+                        </td>
+                    </tr>
+                </table>
+            </EditForm>
+        </td>
+    </tr>
+
+}
+
+@code {
+
+    VybaveniModel? _Item;
+    [Parameter]
+    public VybaveniModel? Item
+    {
+        get => _Item;
+        set
+        {
+            _Item = value;
+            if (value != null && value.IsInEditMode)
+                TurnOnEdit();
+        }
+    }
+
+    private void TurnOnEdit()
+    {
+        if (Item != null)
+        {
+            Item.IsInEditMode = true;
+            editingItem = Item.Copy();
+        }
+    }
+
+    private void TurnOffEdit(bool success)
+    {
+        if (success)
+        {
+            editingItem?.MapTo(Item);
+        }
+        if (Item is not null)
+            Item.IsInEditMode = false;
+        editingItem = null;
+        EditDoneCallback.InvokeAsync(success);
+    }
+
+    VybaveniModel? editingItem;
+
+    [Parameter] public EventCallback DeleteItemCallback { get; set; }
+    [Parameter] public EventCallback<bool> EditDoneCallback { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+
+    private async Task PridejRevizi()
+    {
+        RevizeModel novaRevize = new() { Name = "Nova revize", VybaveniId = Item!.Id };
+        var resp = await Http.PostAsJsonAsync($"revize", novaRevize);
+        if (!resp.IsSuccessStatusCode) return;
+
+        //novaRevize.Id = await resp.Content.ReadFromJsonAsync<Guid>();
+        Item.LastRevision = novaRevize.DateTime;
+
+    }
+
+
+
+}
