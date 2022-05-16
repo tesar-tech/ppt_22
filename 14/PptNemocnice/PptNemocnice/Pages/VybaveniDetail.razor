@@ -29,6 +29,9 @@
         {
             <div> Nazev: @rev.Name Datum a cas: @rev.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
         }
+
+            <button @onclick="PridejRevizi" class="bg-blue-400 twbtn">Provést revizi</button>
+
     </div>
 
     <div class="col-span-2">
@@ -38,7 +41,10 @@
         {
             <div> Detail: @uk.Detail, Kód: @uk.Kod,  Datum a čas: @uk.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
         }
+        @if (item.Revizes.OrderBy(x=>x.DateTime).LastOrDefault()?.DateTime > DateTime.Now.AddYears(-2))
+       {
         <a href="ukon/new?VybaveniId=@Id" class="text-blue-500 underline">Přidat nový úkon k tomuto vybavení</a>
+       }
     </div>
 
  @*    <div class="bg-blue-400">Potřebuje revizi</div>
@@ -48,10 +54,27 @@
 
     [Parameter] public Guid Id {get;set;}
 
-         VybaveniDetailModel? item;
+    VybaveniDetailModel? item;
 
     protected override async Task OnInitializedAsync()
     {
         item = await Http.GetFromJsonAsync<VybaveniDetailModel>($"vybaveni/{Id}");
+    }
+
+    private async Task PridejRevizi()
+    {
+        if (item is null) return;
+        RevizeModel novaRevize = new() { Name = "Nova revize", VybaveniId = item.Id };
+        var resp = await Http.PostAsJsonAsync($"revize", novaRevize);
+        if (!resp.IsSuccessStatusCode) return;
+        //potebujeme získat datum revize (datum je z důvodu bezpečnosti umístěno na serveru.)
+        var respContent = await resp.Content.ReadFromJsonAsync<RevizeCreatedResponseModel>();
+        if(respContent is not null)
+        {
+            novaRevize.Id = respContent.Id;
+            novaRevize.DateTime = respContent.DateTime;
+        }
+
+        item.Revizes.Add(novaRevize);//toto je jediný rozdíl od přidávání revize ve VybaveniRow
     }
 }

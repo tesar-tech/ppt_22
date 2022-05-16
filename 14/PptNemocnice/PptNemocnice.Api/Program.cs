@@ -51,13 +51,19 @@ app.MapPost("/revize", (RevizeModel prichoziModel,NemocniceDbContext db, IMapper
     Revize ent = mapper.Map<Revize>(prichoziModel);//mapovaná na "databázový" typ
     db.Revizes.Add(ent);//přidání do db
     db.SaveChanges();//uložení db (v tuto chvíli se vytvoří id)
-
-    return Results.Created("/revize", ent.Id);
+    return Results.Created("/revize", new RevizeCreatedResponseModel(ent.Id,ent.DateTime));
 });
 
 app.MapPost("/ukon", (UkonModel ukonModel, NemocniceDbContext db, IMapper mapper) =>
 {
     ukonModel.Id = Guid.Empty;
+   var posledniRevizeDatum=  db.Vybavenis.Include(x => x.Revizes)//vybavení včetně revizí
+                .SingleOrDefault(x => x.Id == ukonModel.VybaveniId)?//konkrétní vybavení 
+                .Revizes.OrderBy(x=>x.DateTime)//všechny revize seřazené od nejstarší
+                .LastOrDefault()?.DateTime;//poslední revize (nejvyšší datum) a její datum
+    if (posledniRevizeDatum == null || posledniRevizeDatum.Value.AddYears(2) < DateTime.UtcNow)//dvouroční ověření
+        return Results.BadRequest("Nem;6e se p5idat úkon, pokud je revize starší než 2 roky");
+
     Ukon ent = mapper.Map<Ukon>(ukonModel);
     db.Ukons.Add(ent);
     db.SaveChanges();
