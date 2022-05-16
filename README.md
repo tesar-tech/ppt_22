@@ -14,6 +14,8 @@
 - [10 - Spojení projektů, Loader komponenta, Databáze, SQLite, EntityFramework, AutoMapper, Migrace](10)
 - [11 - EF, data seed, propojení entit, 1:N relace](11)
 - [12 - Kontrolery, logging](12)
+- [13 - Nasazení do Azure, Logging](13)
+- [14 - Komentář k úkolu 13, test 02](14)
 
 ## Dobré Blazor tutoriály
 
