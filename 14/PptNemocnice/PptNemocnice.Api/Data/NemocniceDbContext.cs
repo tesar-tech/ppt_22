@@ -29,4 +29,5 @@ protected override void OnModelCreating(ModelBuilder builder)
     public DbSet<Vybaveni> Vybavenis  => Set<Vybaveni>();
     public DbSet<Revize> Revizes  => Set<Revize>();
     public DbSet<Ukon> Ukons  => Set<Ukon>();
+    public DbSet<Pracovnik> Pracovniks  => Set<Pracovnik>();
 }

@@ -70,6 +70,39 @@ app.MapPost("/ukon", (UkonModel ukonModel, NemocniceDbContext db, IMapper mapper
     return Results.Created("/ukon", ent.Id);
 });
 
+app.MapGet("/seed/{tajnyKod}", ( string tajnyKod ,NemocniceDbContext db, IConfiguration config) =>
+{
+    if (tajnyKod != config["seedSecrete"])
+        return Results.NotFound();
+
+    Random rnd = new();
+    List<Pracovnik> pracanti = new();
+    int pocetPracantu = 10;
+    for (int i = 0; i < pocetPracantu; i++)
+    {
+        pracanti.Add(new() { Name = RandomString(12) });
+    }
+    db.AddRange(pracanti);db.SaveChanges();
+    foreach (var vyb in db.Vybavenis)
+    {
+        int pocetUkonu = rnd.Next(13,25);
+        for (int i = 0; i < pocetUkonu; i++)
+        {
+            Ukon uk = new() { DateTime = DateTime.UtcNow.AddDays(rnd.Next(-100, -1)), 
+                Detail = RandomString(56).Replace("x", " "), 
+                Kod = RandomString(5),VybaveniId = vyb.Id,
+                PracovnikId = pracanti[rnd.Next(pocetPracantu-1)].Id };
+            db.Ukons.Add(uk);
+        }
+    }
+    db.SaveChanges();
+
+    return Results.Ok();
+
+   string RandomString(int length) =>
+       new(Enumerable.Range(0, length).Select(_ => (char)rnd.Next('a', 'z')).ToArray());
+});
+
 
 
 app.MapControllers();

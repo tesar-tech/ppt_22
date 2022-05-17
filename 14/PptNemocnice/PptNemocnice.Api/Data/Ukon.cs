@@ -10,4 +10,6 @@ public class Ukon
 
     public Guid VybaveniId { get; set; }
     public Vybaveni Vybaveni { get; set; } = null!;
+    public Guid? PracovnikId { get; set; }
+    public Pracovnik?  Pracovnik { get; set; } = null!;
 }

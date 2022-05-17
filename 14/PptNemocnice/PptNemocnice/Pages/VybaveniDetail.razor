@@ -20,6 +20,7 @@
 
    <div class="bg-blue-400">Nakoupeno</div>
   <div class="bg-red-500">@item.BoughtDateTime.ToString("yyyy-MM-dd")</div>
+</div>
 
    <div class="col-span-2">
              <div class="font-bold">Revize</div>
@@ -34,12 +35,13 @@
 
     </div>
 
-    <div class="col-span-2">
-        <div class="font-bold">Úkony</div>
+    <div class="col-span-2 py-2">
+        <div class="font-bold text-md underline">Úkony</div>
 
      @foreach(var uk in item.Ukons)
         {
-            <div> Detail: @uk.Detail, Kód: @uk.Kod,  Datum a čas: @uk.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+            <div class=" border-neutral-300 border-t"> <b>Detail</b> <span class="font-bold text-teal-600">@uk.Detail</span>  <b>Kód:</b> @uk.Kod   <b>Datum a čas:</b> @uk.DateTime.ToString("yyyy-MM-dd HH:mm:ss")</div>
+            <div><b>Provedl:</b> <span class=""> @uk.PracovnikName</span></div>
         }
         @if (item.Revizes.OrderBy(x=>x.DateTime).LastOrDefault()?.DateTime > DateTime.Now.AddYears(-2))
        {
@@ -49,7 +51,6 @@
 
  @*    <div class="bg-blue-400">Potřebuje revizi</div>
   <div class="bg-red-500">@(item.NeedsRevision?"Ano":"Ne")</div>*@
-</div>
 @code {
 
     [Parameter] public Guid Id {get;set;}

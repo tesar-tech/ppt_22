@@ -41,7 +41,7 @@ public class VybaveniController:ControllerBase
     [HttpGet("{id}")]//vybaveni
     public ActionResult<VybaveniDetailModel> GetOneVybaveni( Guid id)
     {
-        var item = _db.Vybavenis.Include(x => x.Revizes).Include(x => x.Ukons).SingleOrDefault(x => x.Id == id);
+        var item = _db.Vybavenis.Include(x => x.Revizes).Include(x => x.Ukons).ThenInclude(x=>x.Pracovnik).SingleOrDefault(x => x.Id == id);
         if (item == null) return NotFound("takováto entita neexistuje");
         return _mapper.Map<VybaveniDetailModel>(item);
     }
